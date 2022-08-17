@@ -8,7 +8,7 @@ CREATE DATABASE gl;
 \i gl-schema.sql
 \i gl-seed.sql
 
-\echo 'Delete and recreate the gl database?'
+\echo 'Delete and recreate the gl_test database?'
 \prompt 'Return for yes or control-c to cancel>'foo
 
 DROP DATABASE gl_test;
