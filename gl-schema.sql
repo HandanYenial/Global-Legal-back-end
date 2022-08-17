@@ -1,5 +1,5 @@
 CREATE TABLE departments(
-    id SERIAL PRIMARY KEY,
+    handle VARCHAR(10) PRIMARY KEY,
     name TEXT UNIQUE NOT NULL,
     num_employees INTEGER NOT NULL,
     description TEXT NOT NULL,
