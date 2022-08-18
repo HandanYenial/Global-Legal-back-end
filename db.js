@@ -2,8 +2,8 @@
 
 //Database setup for global&legal
 
-const { Client } = require("pg");
-const { getDatabaseUri } = require("./config");
+const { Client } = require("pg"); //import the client from the pg module- A Client instance will use environment variables for all missing values.
+const { getDatabaseUri } = require("./config"); //import the getDatabaseUri function from the config module
 
 let db;
 
