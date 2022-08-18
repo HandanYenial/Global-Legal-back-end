@@ -26,14 +26,14 @@ VALUES('criminal' , 'Criminal Attorneys' , 10 , 'Criminal lawyers (also known as
   affect businesses, such as taxation, business transactions, and intellectual property rights. The Business Lawyer 
   may also be known as a Corporate Attorney, Corporate Lawyer, or Commercial Lawyer.');
 
-INSERT INTO cases(id,title,description,location,department_handle)
-VALUES(1,'Criminal Case 1' , 'This is a criminal case' , 'New York' , 'criminal'),
-      (2, 'Immigration Case 1', 'This is an immiration case' , 'Albany' ,'immigration' ),
-      (3, 'Immigration Case 2' , 'This is another immigartion case' , 'New York', 'immigration'),
-      (4, 'Business Case 1', 'Here is the business case' , 'Buffolo' , 'business'),
-      (5, 'Business Case 2' , 'Another business case' , 'Syracuse' , 'business'),
-      (6, 'Family Case 1' , 'This is a family case' , 'Rochester' , 'family'),
-      (7, 'Family Case 2' , 'This is another family case' , 'Newyork' , 'family'),
-      (8, 'Criminal Case 2' , 'This is a criminal case' , 'Albany' , 'criminal'),
-      (9, 'Criminal Case 3' , 'This is a criminal case' , 'Utica' , 'criminal');
+INSERT INTO cases(id,title,description,status, location,department_handle)
+VALUES(1,'Criminal Case 1' , 'This is a criminal case' ,'Open','New York' , 'criminal'),
+      (2, 'Immigration Case 1', 'This is an immiration case' , 'Open' 'Albany' ,'immigration' ),
+      (3, 'Immigration Case 2' , 'This is another immigartion case' , 'Pending','New York', 'immigration'),
+      (4, 'Business Case 1', 'Here is the business case' ,'Closed', 'Buffolo' , 'business'),
+      (5, 'Business Case 2' , 'Another business case' , 'Closed','Syracuse' , 'business'),
+      (6, 'Family Case 1' , 'This is a family case' ,'Pending','Rochester' , 'family'),
+      (7, 'Family Case 2' , 'This is another family case' , 'See Department Manager', 'Newyork' , 'family'),
+      (8, 'Criminal Case 2' , 'This is a criminal case' ,'Open','Albany' , 'criminal'),
+      (9, 'Criminal Case 3' , 'This is a criminal case' ,'Open','Utica' , 'criminal');
       

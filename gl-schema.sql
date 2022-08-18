@@ -19,6 +19,7 @@ CREATE TABLE cases(
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
+    status TEXT NOT NULL,
     location TEXT NOT NULL,
     department_handle VARCHAR NOT NULL 
        REFERENCES departments ON DELETE CASCADE
