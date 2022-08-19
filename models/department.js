@@ -21,9 +21,16 @@ class Department {
             throw new BadRequestError(`Duplicate department: ${handle}`);
         }
         const result = await db.query(
-            `INSERT INTO departments(handle,name,num_employees,description)
+            `INSERT INTO departments(
+                                handle,
+                                name,
+                                num_employees,
+                                description)
             VALUES($1, $2, $3, $4)
-            RETURNING handle, name, description, num_employees AS "numEmployees"`,
+            RETURNING handle, 
+                      name, 
+                      num_employees AS "numEmployees",
+                      description `,
             [handle, name, numEmployees, description],
         );
         const department = result.rows[0];
@@ -36,7 +43,10 @@ class Department {
         //returns [{handle, name, num_employees, description}, ...]
 
         static async findAll(searchFilters = {}){
-            let query = `SELECT handle, name, description, num_employees AS "numEmployees"
+            let query = `SELECT handle, 
+                                name,
+                                num_employees AS "numEmployees",
+                                description
                          FROM departments`;
             let whereExpressions = []; //WHERE name=$1, WHERE name= criminal
             let queryValues =[]; //['criminal'] for search by name
@@ -45,7 +55,7 @@ class Department {
 
             if (name){
                 queryValues.push(`%${name}%`);
-                whereExpressions.push(`name ILIKE $${queryValues.length}`);//ILIKE: case insensitive
+                whereExpressions.push(`name ILIKE $${queryValues.length}`);//ILIKE: lawsuit insensitive
             }
 
             if (whereExpressions.length > 0){
@@ -59,12 +69,15 @@ class Department {
 
         //Given a department handle, return data about department
         //throws NotFoundError if not found
-        //returns {handle, name, num_employees, description, cases} 
-        //where cases is [{id, title, description, status, location, department_handle}, ...]
+        //returns {handle, name, num_employees, description, lawsuits} 
+        //where lawsuits is [{id, title, description, status, location, department_handle}, ...]
 
         static async get(handle){
             const departmentRes = await db.query(
-                `SELECT handle, name, description, num_employees AS "numEmployees"
+                `SELECT handle,
+                        name,
+                        num_employees AS "numEmployees",
+                        description
                 FROM departments
                 WHERE handle = $1`,
                 [handle] 
@@ -76,15 +89,15 @@ class Department {
                 throw new NotFoundError(`No department: ${handle}`);
             }
 
-            const casesRes = await db.query(
+            const lawsuitsRes = await db.query(
                 `SELECT id, title, description, status, location
-                FROM cases
+                FROM lawsuits
                 WHERE department_handle = $1
                 ORDER BY id`,
                 [handle],
             );
 
-            department.cases = casesRes.rows;
+            department.lawsuits = lawsuitsRes.rows;
 
             return department;
         }
@@ -106,7 +119,10 @@ class Department {
             const querySql = `UPDATE departments
                               SET ${setCols}
                               WHERE handle = ${handleVarIdx}
-                              RETURNING handle, name,description, num_employees AS "numEmployees"`;
+                              RETURNING handle,
+                                        name,
+                                        num_employees AS "numEmployees",
+                                        description`;
             const result = await db.query(querySql, [...values, handle]);
             const department = result.rows[0];
 

@@ -15,7 +15,7 @@ CREATE TABLE employees (
   is_admin BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE cases(
+CREATE TABLE lawsuit(
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE cases(
 CREATE TABLE assignments (
   username VARCHAR(25)
     REFERENCES employees ON DELETE CASCADE,
-  case_id INTEGER
-    REFERENCES cases ON DELETE CASCADE,
-  PRIMARY KEY (username, case_id)
+  lawsuit_id INTEGER
+    REFERENCES lawsuit ON DELETE CASCADE,
+  PRIMARY KEY (username, lawsuit_id)
 );

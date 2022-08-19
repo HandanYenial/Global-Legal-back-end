@@ -14,7 +14,7 @@ VALUES ('paralegal',
 
 INSERT INTO departments(handle,name,num_employees,description)
 VALUES('criminal' , 'Criminal Attorneys' , 10 , 'Criminal lawyers (also known as criminal defense lawyers) defend individuals
- who have been accused of committing a crime. They conduct research, analyze cases, and present their findings
+ who have been accused of committing a crime. They conduct research, analyze lawsuits, and present their findings
  in court in an effort to gain the defendants freedom or negotiate a plea bargain or settlement.'),
  ('family','Family Attorneys' , 9 , 'Family lawyers (also known as family law attorneys) help families resolve legal issues
   such as divorce, child custody, and adoption. They also help families resolve issues that arise when a family
@@ -26,14 +26,14 @@ VALUES('criminal' , 'Criminal Attorneys' , 10 , 'Criminal lawyers (also known as
   affect businesses, such as taxation, business transactions, and intellectual property rights. The Business Lawyer 
   may also be known as a Corporate Attorney, Corporate Lawyer, or Commercial Lawyer.');
 
-INSERT INTO cases(id,title,description,status, location,department_handle)
-VALUES(1,'Criminal Case 1' , 'This is a criminal case' ,'Open','New York' , 'criminal'),
-      (2, 'Immigration Case 1', 'This is an immiration case' , 'Open' 'Albany' ,'immigration' ),
-      (3, 'Immigration Case 2' , 'This is another immigartion case' , 'Pending','New York', 'immigration'),
-      (4, 'Business Case 1', 'Here is the business case' ,'Closed', 'Buffolo' , 'business'),
-      (5, 'Business Case 2' , 'Another business case' , 'Closed','Syracuse' , 'business'),
-      (6, 'Family Case 1' , 'This is a family case' ,'Pending','Rochester' , 'family'),
-      (7, 'Family Case 2' , 'This is another family case' , 'See Department Manager', 'Newyork' , 'family'),
-      (8, 'Criminal Case 2' , 'This is a criminal case' ,'Open','Albany' , 'criminal'),
-      (9, 'Criminal Case 3' , 'This is a criminal case' ,'Open','Utica' , 'criminal');
+INSERT INTO lawsuits(id,title,description,status, location,department_handle)
+VALUES(1,'Criminal lawsuit 1' , 'This is a criminal lawsuit' ,'Open','New York' , 'criminal'),
+      (2, 'Immigration lawsuit 1', 'This is an immiration lawsuit' , 'Open' 'Albany' ,'immigration' ),
+      (3, 'Immigration lawsuit 2' , 'This is another immigartion lawsuit' , 'Pending','New York', 'immigration'),
+      (4, 'Business lawsuit 1', 'Here is the business lawsuit' ,'Closed', 'Buffolo' , 'business'),
+      (5, 'Business lawsuit 2' , 'Another business lawsuit' , 'Closed','Syracuse' , 'business'),
+      (6, 'Family lawsuit 1' , 'This is a family lawsuit' ,'Pending','Rochester' , 'family'),
+      (7, 'Family lawsuit 2' , 'This is another family lawsuit' , 'See Department Manager', 'Newyork' , 'family'),
+      (8, 'Criminal lawsuit 2' , 'This is a criminal lawsuit' ,'Open','Albany' , 'criminal'),
+      (9, 'Criminal lawsuit 3' , 'This is a criminal lawsuit' ,'Open','Utica' , 'criminal');
       
