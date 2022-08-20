@@ -1,0 +1,82 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "additionalProperties":false,
+    "required": [
+        "username",
+        "password",
+        "firstName",
+        "lastName",
+        "email"
+    ],
+    "properties": {
+        "username": {
+            "type": "string",
+            "default": "",
+            "minLength":1,
+            "maxLength":30,
+            "examples": [
+                "paralegal"
+            ]
+        },
+        "password": {
+            "type": "string",
+            "default": "",
+            "title": "The password Schema",
+            "minLength":5,
+            "maxLength":20,
+            "examples": [
+                "asdfg1234"
+            ]
+        },
+        "firstName": {
+            "type": "string",
+            "default": "",
+            "title": "The firstName Schema",
+            "minLength":1,
+            "maxLength":20,
+            "examples": [
+                "employee"
+            ]
+        },
+        "lastName": {
+            "type": "string",
+            "default": "",
+            "title": "The lastName Schema",
+            "minLength":1,
+            "maxLength":20,
+            "examples": [
+                "employeelast"
+            ]
+        },
+        "email": {
+            "type": "string",
+            "default": "",
+            "title": "The email Schema",
+            "minLength":6,
+            "maxLength":60,
+            "examples": [
+                "paralegal@employee.com"
+            ]
+        },
+        "isAdmin":{
+            "type":"boolean",
+            "default":false,
+            "title":"The isAdmin Schema",
+            "examples":[
+                false
+            ]
+        }
+    },
+    "examples": [{
+        "username": "paralegal",
+        "password": "asdfg1234",
+        "firstName": "employee",
+        "lastName": "employeelast",
+        "email": "paralegal@employee.com",
+        "isAdmin":false
+    }]
+}

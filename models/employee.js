@@ -176,7 +176,7 @@ class Employee {
      * 
      */
 
-    static async getThelawsuit(username, lawsuitId){
+    static async addLawsuit(username, lawsuitId){
         const preCheck = await db.query(
             `SELECT id
             FROM lawsuits
@@ -200,6 +200,34 @@ class Employee {
         await db.query(
               `INSERT INTO assignments (lawsuit_id, username)
               VALUES ($1, $2)`,
+              [lawsuitId, username],
+        );
+    }
+
+    static async removeLawsuit(username, lawsuitId){
+        const preCheck = await db.query(
+            `SELECT id
+            FROM lawsuits
+            WHERE id=$1`,
+            [lawsuitId],
+        );
+        const lawsuit = preCheck.rows[0];
+
+        if(!lawsuit) throw new NotFoundError(`There is no such lawsuit : ${lawsuitId}`);
+
+        const preCheck2 = await db.query(`
+               SELECT username
+               FROM employees
+               WHERE username = $1`,
+               [username],
+               );
+        const employee = preCheck2.rows[0];
+
+        if(!employee) throw new NotFoundError(`There is no such employee : ${username}`);
+
+        await db.query(
+              `DELETE FROM assignments
+              WHERE lawsuit_id = $1 AND username = $2`,
               [lawsuitId, username],
         );
     }
