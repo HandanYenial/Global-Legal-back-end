@@ -225,3 +225,190 @@ describe("GET/employees/:username", function(){
     });
 });
 
+describe("PATCH/employees/:employee" , function(){//patch request to employees route with the username of employee1
+    test("works for admin:admin can update employee info", async function(){
+        const response = await request(app) //make a request to the app
+                        .patch(`/employees/employee1`) //patch request to employees route with the username of employee1
+                        .send({ //send the following data
+                            firstname:"newfirstname1",
+                            lastname:"newlastname1",
+                        })
+                        .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
+        expect(response.body).toEqual({ //expect the response body to be the following
+            employee:{
+                username:"employee1",
+                firstname:"newfirstname1",
+                lastname:"newlastname1",
+                email:"employee1@email.com",
+                isAdmin:false,
+            },
+        });
+    });
+
+    test("works for same employee:an employee can make changes on their own account", async function(){
+        const response = await request(app) //make a request to the app
+                        .patch(`/employees/employee1`) //patch request to employees route with the username of employee1
+                        .send({ //send the following data
+                            firstname:"newfirstname1",
+                            lastname:"newlastname1",
+                        })
+                        .set("authorization", `Bearer ${e1Token}`); //set the authorization header to the employee token
+        expect(response.body).toEqual({ //expect the response body to be the following
+            employee:{
+                username:"employee1",
+                firstname:"newfirstname1",
+                lastname:"newlastname1",
+                email:"employee1@email.com",
+                isAdmin:false,
+            },
+        });
+    });
+
+    test("unauth for other employees:employees cannot update another employee's info" , async function(){
+        const response = await request(app) //make a request to the app
+                        .patch(`/employees/employee1`) //patch request to employees route with the username of employee1
+                        .send({ //send the following data
+                            firstname:"newfirstname1",
+                            lastname:"newlastname1",
+                        })
+                        .set("authorization", `Bearer ${e2Token}`); //set the authorization header to the employee token
+        expect(response.statusCode).toEqual(401); //expect the status code to be 401
+    });
+
+    test("unauth for anon" , async function(){
+        const response = await request(app) //make a request to the app
+                        .patch(`/employees/employee1`) //patch request to employees route with the username of employee1
+                        .send({ //send the following data
+                            firstname:"newfirstname1",
+                            lastname:"newlastname1",
+                        });
+        expect(response.statusCode).toEqual(401); //expect the status code to be 401
+    });
+
+    test("not found for no such employee" , async function(){
+        const response = await request(app) //make a request to the app
+                        .patch(`/employees/employee100`) //patch request to employees route with the username of employee100
+                        .send({ //send the following data
+                            firstname:"newfirstname1",
+                            lastname:"newlastname1",
+                        })
+                        .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
+        expect(response.statusCode).toEqual(404); //expect the status code to be 404
+    });
+
+    test("bad request with invalid data" , async function(){
+        const response = await request(app) //make a request to the app
+                        .patch(`/employees/employee1`) //patch request to employees route with the username of employee1
+                        .send({ //send the following data
+                            firstname:42,
+                            lastname:"newlastname1",
+                        })
+                        .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
+        expect(response.statusCode).toEqual(400); //expect the status code to be 400
+    });
+
+
+    test("works: can set new password", async function(){ //test to see if admin can change the password of an employee
+        const response = await request(app) //make a request to the app
+                        .patch(`/employees/employee1`) //patch request to employees route with the username of employee1
+                        .send({ //send the following data
+                            password:"newpassword",
+                        })
+                        .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
+        expect(response.body).toEqual({ //expect the response body to be the following
+            employee:{
+                username:"employee1",
+                firstname:"newfirstname1",
+                lastname:"newlastname1",
+                email:"employee1@email.com",
+                isAdmin:false,
+            },
+        });
+    const isSuccessful = await Employee.authenticate("employee1", "newpassword"); //authenticate the employee with the new password
+    expect(isSuccessful).toBeTruthy(); //expect the authentication to be successful
+    });
+});
+
+describe("DELETE/employees/:employee" , function(){ //delete request to employees route with the username of employee1
+    test("works for admin:admin can delete employee", async function(){
+        const response = await request(app) //make a request to the app
+                        .delete(`/employees/employee1`) //delete request to employees route with the username of employee1
+                        .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
+        expect(response.body).toEqual({ deleted: "employee1" }); //expect the response body to be the following
+    });
+
+    test("works: employee can delete their own account", async function(){
+        const response = await request(app) //make a request to the app
+                        .delete(`/employees/employee2`) //delete request to employees route with the username of employee2
+                        .set("authorization", `Bearer ${e2Token}`); //set the authorization header to the employee token
+        expect(response.body).toEqual({ deleted: "employee2" }); //expect the response body to be the following
+    });
+
+    test("unauth for other employees:employees cannot delete another employee's account" , async function(){
+        const response = await request(app) //make a request to the app
+                        .delete(`/employees/employee1`) //delete request to employees route with the username of employee1
+                        .set("authorization", `Bearer ${e2Token}`); //set the authorization header to the employee token
+        expect(response.statusCode).toEqual(401); //expect the status code to be 401
+    });
+
+    test("unauth for anon" , async function(){
+        const response = await request(app) //make a request to the app
+                        .delete(`/employees/employee1`) //delete request to employees route with the username of employee1
+        expect(response.statusCode).toEqual(401); //expect the status code to be 401
+    });
+
+    test("not found for no such employee" , async function(){
+        const response = await request(app) //make a request to the app
+                        .delete(`/employees/employee100`) //delete request to employees route with the username of employee100
+                        .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
+        expect(response.statusCode).toEqual(404); //expect the status code to be 404
+    });
+});
+
+
+describe("POST/employees/:username/lawsuits/:id", function(){
+    test("works for admin:admin can assign a lawsuit to employee", async function(){
+        const response = await request(app)//make a request to the app
+                        .post(`/employees/employee1/lawsuits/${testLawsuitIds[1]}`) //post request to employees route with the username of employee1 and the id lawsuit
+                        .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
+        expect(response.body).toEqual({ //expect the response body to be the following
+            assigned:testLawsuitIds[1],
+        });
+    });
+
+    test("works: employee can assign a lawsuit to themselves", async function(){
+        const response = request(app) //make a request to the app
+                        .post(`/employees/employee2/lawsuits/${testLawsuitIds[1]}`) //post request to employees route with the username of employee2 and the id lawsuit
+                        .set("authorization", `Bearer ${e2Token}`); //set the authorization header to the employee token
+        expect(response.body).toEqual({ //expect the response body to be the following
+            assigned:testLawsuitIds[1]
+        });
+    });
+
+    test("unauth for other employees:employees cannot assign a lawsuit to another employee" , async function(){
+        const response = await request(app) //make a request to the app
+                        .post(`/employees/employee1/lawsuits/${testLawsuitIds[1]}`) //post request to employees route with the username of employee1 and the id lawsuit
+                        .set("authorization", `Bearer ${e2Token}`); //set the authorization header to the employee token
+        expect(response.statusCode).toEqual(401); //expect the status code to be 401
+    });
+
+    test("unauth for anon" , async function(){
+        const response = await request(app) //make a request to the app
+                        .post(`/employees/employee1/lawsuits/${testLawsuitIds[1]}`) //post request to employees route with the username of employee1 and the id lawsuit
+        expect(response.statusCode).toEqual(401); //expect the status code to be 401
+    });
+
+    test("not found for no such employee" , async function(){
+        const response = await request(app) //make a request to the app
+                        .post(`/employees/employee100/lawsuits/${testLawsuitIds[1]}`) //post request to employees route with the username of employee100 and the id lawsuit
+                        .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
+        expect(response.statusCode).toEqual(404); //expect the status code to be 404
+    });
+
+    test("bad request for invalid lawsuit id" , async function(){
+        const response = await request(app) //make a request to the app
+                        .post(`/employees/employee1/lawsuits/invalid`) //post request to employees route with the username of employee1 and the id lawsuit
+                        .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
+        expect(response.statusCode).toEqual(400); //expect the status code to be 400
+    });
+});
