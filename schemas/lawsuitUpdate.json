@@ -5,8 +5,7 @@
     "default": {},
     "title": "Root Schema",
     "required": [
-        "title",
-        "department_handle"
+        "title"
     ],
     "properties": {
         "title": {
