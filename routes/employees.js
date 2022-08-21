@@ -133,3 +133,5 @@ router.delete("/:username/:lawsuit/:id" , ensureAdmin, async function(req,res,ne
         return next(err);
     }
 });
+
+module.exports = router; //export the routers
