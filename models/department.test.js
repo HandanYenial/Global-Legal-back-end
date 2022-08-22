@@ -1,25 +1,27 @@
 "use strict";
 
-const db = require("../db");
-const { BadRequestError, NotFoundError } = require("..expressError");
-const { Department } = require("./department");
-const { commonBeforeAll,
-        commonBeforeEach,
-        commonAfterEach,
-        commonAfterAll,
-        testLawsuitIds,} = require("./_testCommon");
+const db = require("../db.js");
+const { BadRequestError, NotFoundError } = require("../expressError");
+const Department = require("./department.js");
+const {
+  commonBeforeAll,
+  commonBeforeEach,
+  commonAfterEach,
+  commonAfterAll,
+  testLawsuitIds,
+} = require("./_testCommon");
 
-beforeAll(commonBeforeAll); //run commonBeforeAll before each test case which is in _testCommon.js
+beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
 describe("create" , function(){
     const newDepartment = {
-        handle : "health",
-        name : "Health",
+        handle : "new",
+        name : "New",
         numEmployees : 25,
-        description : "Health department",
+        description : "New department",
     };
 
     test("works", async function(){
@@ -36,10 +38,10 @@ describe("create" , function(){
         );
         expect(result.rows).toEqual([
             {
-                handle : "health",  
-                name : "Health",
+                handle : "new",  
+                name : "New",
                 numEmployees : 25,
-                description : "Health department",
+                description : "New department",
             },
         ]);
     });
@@ -52,7 +54,7 @@ describe("create" , function(){
         } catch(err){
             expect(err instanceof BadRequestError).toBeTruthy();
         }
-        });
+    });
 });
 
 describe("findAll" , function(){
@@ -60,34 +62,34 @@ describe("findAll" , function(){
         let departments = await Department.findAll();
         expect(departments).toEqual([
             {
-                handle : "legal",
-                name : "Legal",
+                handle : "d1",
+                name : "Department 1",
                 numEmployees : 25,
-                description : "Legal department",
+                description : "Department 1 Description",
             },
             {
-                handle : "health",
-                name : "Health",
+                handle : "d2",
+                name : "Department 2",
                 numEmployees : 25,
-                description : "Health department",
+                description : "Department 2 Description",
             },
             {
-                handle : "hr",
-                name : "HR",
+                handle : "d3",
+                name : "Department 3",
                 numEmployees : 25,
-                description : "HR department",
+                description : "Department 3 Description",
             },
         ]);
     });
 
     test("works for filter by name" , async function(){
-        let departments = await Department.findAll({name : "legal"});
+        let departments = await Department.findAll({name : "Department 1"});
         expect(departments).toEqual([
             {
-                handle : "legal",
-                name : "Legal",
+                handle : "d1",
+                name :"Department 1",
                 numEmployees : 25,
-                description : "Legal department",
+                description : "Department 1 Description",
             },
         ]);
     });
@@ -100,12 +102,12 @@ describe("findAll" , function(){
 
 describe("get" , function(){
     test("works" , async function(){
-        let department = await Department.get("legal");
+        let department = await Department.get("d1");
         expect(department).toEqual({
-            handle : "legal",
-            name : "Legal",
+            handle : "d1",
+            name : "Department 1",
             numEmployees : 25,
-            description : "Legal department",
+            description : "Department 1 Description",
             lawsuits :[
                 {id: testLawsuitIds[0], title: "Lawsuit1", description: "Lawsuit1 description", status: "open", location: "New York", departmentHandle: "legal"},
                 {id: testLawsuitIds[1], title: "Lawsuit2", description: "Lawsuit2 description", status: "open", location: "New York", departmentHandle: "legal"},
@@ -133,9 +135,9 @@ describe("update" , function(){
     };
 
     test("works" , async function(){
-        let department = await Department.update("legal, updateData");
+        let department = await Department.update("d1, updateData");
         expect(department).toEqual({
-            handle : "legal",
+            handle : "d1",
             ...updateData,
         });
 
@@ -145,10 +147,10 @@ describe("update" , function(){
                     num_employees,
                     description
             FROM departments    
-            WHERE handle = 'legal'`
+            WHERE handle = 'd1'`
         );
         expect(result.rows).toEqual([{
-            handle : "legal",
+            handle : "d1",
             name: "Updated",
             numEmployees : 25,
             description : "Updated department",
@@ -167,7 +169,7 @@ describe("update" , function(){
 
     test("bad request with no data" , async function(){
         try{
-            await Department.update("legal" , {});
+            await Department.update("d1" , {});
             fail();
         } catch(err){
             expect(err instanceof BadRequestError).toBeTruthy();
@@ -177,9 +179,9 @@ describe("update" , function(){
 
 describe("remove" , function(){
     test("works" , async function(){
-        await Department.remove("legal");
+        await Department.remove("d1");
         const res = await db.query(
-            "SELECT handle FROM departments WHERE handle = 'legal'"
+            "SELECT handle FROM departments WHERE handle = 'd1'"
         );
         expect(res.rows.length).toEqual(0);
     });

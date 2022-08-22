@@ -1,7 +1,7 @@
 "use strict";
 
-const { Lawsuit } = require("./lawsuit");
-const db = require("../db");
+const { Lawsuit } = require("./lawsuit.js");
+const db = require("../db.js");
 const { BadRequestError, NotFoundError } = require("../expressError");
 const {
     commonBeforeAll,
@@ -27,13 +27,13 @@ describe("create", function(){
 
     test("works" , async function(){
         let lawsuit = await Lawsuit.create(newLawsuit);
-        expect (lawsuit).toEqual({
+        expect(lawsuit).toEqual({
             id: expect.any(Number),
             title: "New Lawsuit",
             description: "New Lawsuit Description",
             status: "New Lawsuit Status",
             location: "New Lawsuit Location",
-            departmentHandle: "d1",
+            departmentHandle: "d1"
         });
     });
 });
@@ -92,7 +92,7 @@ describe("findAll", function(){
 describe("get" ,function(){
     test("works", async function(){
         let lawsuit = await Lawsuit.get(testLawsuitIds[0]);
-        expect (lawsuit).toEqual({
+        expect(lawsuit).toEqual({
             id: testLawsuitIds[0],
             title: "Lawsuit1",
             description: "Lawsuit1 Description",

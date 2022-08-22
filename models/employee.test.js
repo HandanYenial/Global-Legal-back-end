@@ -1,7 +1,7 @@
 "use strict";
 
-const { Employee } = require("./employee");
-const db = require("../db");
+const Employee = require("./employee.js");
+const db = require("../db.js");
 const { BadRequestError, NotFoundError, UnauthorizedError} = require("../expressError");
 const {
     commonBeforeAll,
