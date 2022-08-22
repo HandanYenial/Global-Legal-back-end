@@ -61,7 +61,7 @@ class Lawsuit {
         }
 
         //Finalize query and return results
-        query += " ORDER BY id";
+        query += " ORDER BY title";
         const lawsuitsRes = await db.query(query, queryValues);
         return lawsuitsRes.rows;
     }
@@ -102,6 +102,51 @@ class Lawsuit {
 
     return lawsuit;
     }
+
+
+//Update lawsuit with 'data'
+//This is a "partial update" --- it's fine if data doesn't contain all the fields;
+//this only changes provided fields.
+//Returns {id, title, description, status, location, department_handle}
+
+    static async update(id,data){
+       const{ setCols, values } = sqlForPartialUpdate(
+              data,
+              {}
+         );
+         const idVarIdx = "$" + (values.length + 1);
+    
+         const querySql = `UPDATE lawsuits
+                             SET ${setCols}
+                             WHERE id = ${idVarIdx}
+                             RETURNING id,
+                                      title,
+                                      description,
+                                      status,
+                                      location,
+                                      department_handle AS "departmentHandle"`;
+          const result = await db.query(querySql, [...values, id]);
+          const lawsuit = result.rows[0];
+    
+          if(!lawsuit) throw new NotFoundError(`No lawsuit: ${id}`);
+    
+          return lawsuit;
+    }
+
+    //Delete given lawsuit from database; returns undefined.
+    static async remove(id){
+        let result = await db.query(
+            `DELETE
+            FROM lawsuits
+            WHERE id = $1
+            RETURNING id`,
+            [id]
+        );
+        const lawsuit = result.rows[0];
+
+        if(!lawsuit) throw new NotFoundError(`No lawsuit: ${id}`);
+    }
 }
+
 
 module.exports = Lawsuit;

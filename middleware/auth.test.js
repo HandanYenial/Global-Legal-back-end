@@ -1,12 +1,12 @@
 "use strict";
 
-const jwt = require("./jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const { UnauthorizedError } = require("../expressError");
 const {
     authenticateJWT,
     ensureLoggedIn,
     ensureAdmin,
-    ensureCorrectUserOrAdmin,
+    ensureCorrectEmployeeOrAdmin,
 } = require("./auth");
 
 const { SECRET_KEY } = require("../config");
@@ -26,7 +26,7 @@ describe("authenticateJWT" , function(){
 
     authenticateJWT(req, res, next);
     expect(res.locals).toEqual({
-        user: {
+        employee: {
             iat: expect.any(Number),
             username: "test",
             isAdmin: false,
@@ -63,7 +63,7 @@ describe("ensureLoggedIn", function(){
     test("works" , function(){
         expect.assertions(1); //expect 1 assertion to be made
         const req = {};
-        const res = { locals: { user: { username: "test", isAdmin: false } } };
+        const res = { locals: { employee: { username: "test", isAdmin: false } } };
         const next = function(err){
             expect(err).toBeFalsy();
         };
@@ -85,7 +85,7 @@ describe("ensureAdmin" , function(){
     test("works", function(){
         expect.assertions(1);
         const req = {};
-        const res = { locals: { user: {username:"test" , isAdmin: true} } };
+        const res = { locals: { employee: {username:"test" , isAdmin: true} } };
         const next = function(err){
             expect(err).toBeFalsy();
         };
@@ -95,9 +95,9 @@ describe("ensureAdmin" , function(){
     test("unauth if not admin", function(){
         expect.assertions(1);
         const req = {};
-        const res = { local: { user : { username: "test" , isAdmin : false } } };
+        const res = { local: { employee: { username: "test" , isAdmin : false } } };
         const next =  function(err){
-            expect(err instanceof UnauthorizedError).toBeTruthy();
+            expect(err instanceof UnauthorizedError).toBeFalsy();
         };
         ensureAdmin(req,res,next);
     });
@@ -105,7 +105,7 @@ describe("ensureAdmin" , function(){
     test("unauth if anon" , function(){
         expect.assertions(1);
         const req = {};
-        const res = { locals: {}}; //no user
+        const res = { locals: {}}; //no employee
         const next = function(err){
             expect (err instanceof UnauthorizedError).toBeTruthy();
         };
@@ -113,35 +113,35 @@ describe("ensureAdmin" , function(){
     });
 });
 
-describe("ensureCorrectUserOrAdmin" , function(){
+describe("ensureCorrectEmployeeOrAdmin" , function(){
     test("works: admin" , function(){
         expect.assertions(1);
         const req = { params: { username : "test" } };
-        const res = { locals : {user : { username : "admin" , isAdmin : true } } };
+        const res = { locals : { employee : { username : "admin" , isAdmin : true } } };
         const next = function(err){
             expect(err).toBeFalsy();
         };
-        ensureCorrectUserOrAdmin(req,res,next);
+        ensureCorrectEmployeeOrAdmin(req,res,next);
     });
 
-    test("works:same user" , function(){
+    test("works:same employee" , function(){
         expect.assertions(1);
         const req = { params : { username : "test" } };
-        const res = { locals : { user: { username:"test" , isAdmin : false } } };
+        const res = { locals : { employee: { username:"test" , isAdmin : false } } };
         const next = function(err){
             expect(err).toBeFalsy();
         };
-        ensureCorrectUserOrAdmin(req,res,next);
+        ensureCorrectEmployeeOrAdmin(req,res,next);
     });
 
     test("unauth : mismatch" , function(){
         expect.assertions(1);
         const req = { params : { username : "wrong" } };
-        const res = { locals : { user : { username : "test" , isAdmin : false } } };
+        const res = { locals : { employee : { username : "test" , isAdmin : false } } };
         const next = function(err){
             expect(err instanceof UnauthorizedError).toBeTruthy();
         };
-        ensureCorrectUserOrAdmin(req,res,next);
+        ensureCorrectEmployeeOrAdmin(req,res,next);
     });
 
     test("unauth : anon" , function(){
@@ -151,6 +151,6 @@ describe("ensureCorrectUserOrAdmin" , function(){
         const next = function(err){
             expect(err instanceof UnauthorizedError).toBeTruthy();
         };
-        ensureCorrectUserOrAdmin(req,res,next);
+        ensureCorrectEmployeeOrAdmin(req,res,next);
     });
 });

@@ -1,4 +1,4 @@
-"use stirct";
+"use strict";
 
 const request = require("supertest"); //SuperTest is a library that allows you to test your Node. js HTTP servers. 
 const db = require("../db.js"); //Import database

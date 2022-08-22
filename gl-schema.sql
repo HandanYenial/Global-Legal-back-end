@@ -1,7 +1,7 @@
 CREATE TABLE departments(
-    handle VARCHAR(25) PRIMARY KEY,
+    handle VARCHAR(25) PRIMARY KEY, CHECK (handle=lower(handle)),
     name TEXT UNIQUE NOT NULL,
-    num_employees INTEGER NOT NULL,
+    num_employees INTEGER CHECK (num_employees>=0),
     description TEXT NOT NULL
 );
 
@@ -15,13 +15,13 @@ CREATE TABLE employees (
   is_admin BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE lawsuit(
+CREATE TABLE lawsuits(
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
     status TEXT NOT NULL,
     location TEXT NOT NULL,
-    department_handle VARCHAR NOT NULL 
+    department_handle VARCHAR(25) NOT NULL 
        REFERENCES departments ON DELETE CASCADE
 );
 
@@ -29,6 +29,6 @@ CREATE TABLE assignments (
   username VARCHAR(25)
     REFERENCES employees ON DELETE CASCADE,
   lawsuit_id INTEGER
-    REFERENCES lawsuit ON DELETE CASCADE,
+    REFERENCES lawsuits ON DELETE CASCADE,
   PRIMARY KEY (username, lawsuit_id)
 );

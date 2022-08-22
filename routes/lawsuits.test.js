@@ -254,7 +254,7 @@ describe("PATCH/lawsuits/:id" , function(){
         });
     });
 
-    test("umauth for non-admin" , async function(){ //test if the request is unauthorized if the user is not an admin
+    test("umauth for non-admin" , async function(){ //test if the request is unauthorized if the employee is not an admin
         const response = await request(app)
                             .patch(`/lawsuits/${testLawsuitIds[0]}`)
                             .send({

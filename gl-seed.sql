@@ -1,39 +1,39 @@
 INSERT INTO employees (username, password, first_name, last_name, email, is_admin)
-VALUES ('paralegal',
-        '$2b$12$AZH7virni5jlTTiGgEg4zu3lSvAw68qVEfSIOjJ3RqtbJbdW/Oi5q',
-        'Paralegal',
-        'User',
-        'user@paralegal.com',
-        FALSE),
-       ('lawyer',
+VALUES ('lawyer',
         '$2b$12$AZH7virni5jlTTiGgEg4zu3lSvAw68qVEfSIOjJ3RqtbJbdW/Oi5q',
         'Lawyer',
+        'Employee',
+        'employee@legal.com',
+        FALSE),
+       ('admin',
+        '$2b$12$AZH7virni5jlTTiGgEg4zu3lSvAw68qVEfSIOjJ3RqtbJbdW/Oi5q',
+        'Manager',
         'Admin!',
-        'admin@lawyer.com',
+        'admin@legal.com',
         TRUE);
 
 INSERT INTO departments(handle,name,num_employees,description)
-VALUES('criminal' , 'Criminal Attorneys' , 10 , 'Criminal lawyers (also known as criminal defense lawyers) defend individuals
+VALUES('criminal','Criminal Attorneys',10,'Criminal lawyers (also known as criminal defense lawyers) defend individuals
  who have been accused of committing a crime. They conduct research, analyze lawsuits, and present their findings
  in court in an effort to gain the defendants freedom or negotiate a plea bargain or settlement.'),
- ('family','Family Attorneys' , 9 , 'Family lawyers (also known as family law attorneys) help families resolve legal issues
+ ('family','Family Attorneys',9,'Family lawyers (also known as family law attorneys) help families resolve legal issues
   such as divorce, child custody, and adoption. They also help families resolve issues that arise when a family
   member dies without a will.'),
- ('immigration','Immigration Attorneys' , 10 , 'Immigration attorneys handle legal matters that pertain to immigration matters.
+ ('immigration','Immigration Attorneys',10,'Immigration attorneys handle legal matters that pertain to immigration matters.
  Immigration attorneys interpret and provide advice on migration, citizenship and business immigration issues, 
  political asylum, and on the processes through which people may secure travel, work or student visas.'),
- ('business','Business Attorneys' , 15 , 'Business Lawyers are who focus on providing legal advice to business owners on issues that
+ ('business','Business Attorneys',15,'Business Lawyers are who focus on providing legal advice to business owners on issues that
   affect businesses, such as taxation, business transactions, and intellectual property rights. The Business Lawyer 
   may also be known as a Corporate Attorney, Corporate Lawyer, or Commercial Lawyer.');
 
 INSERT INTO lawsuits(id,title,description,status, location,department_handle)
-VALUES(1,'Criminal lawsuit 1' , 'This is a criminal lawsuit' ,'Open','New York' , 'criminal'),
-      (2, 'Immigration lawsuit 1', 'This is an immiration lawsuit' , 'Open' 'Albany' ,'immigration' ),
-      (3, 'Immigration lawsuit 2' , 'This is another immigartion lawsuit' , 'Pending','New York', 'immigration'),
-      (4, 'Business lawsuit 1', 'Here is the business lawsuit' ,'Closed', 'Buffolo' , 'business'),
-      (5, 'Business lawsuit 2' , 'Another business lawsuit' , 'Closed','Syracuse' , 'business'),
-      (6, 'Family lawsuit 1' , 'This is a family lawsuit' ,'Pending','Rochester' , 'family'),
-      (7, 'Family lawsuit 2' , 'This is another family lawsuit' , 'See Department Manager', 'Newyork' , 'family'),
-      (8, 'Criminal lawsuit 2' , 'This is a criminal lawsuit' ,'Open','Albany' , 'criminal'),
-      (9, 'Criminal lawsuit 3' , 'This is a criminal lawsuit' ,'Open','Utica' , 'criminal');
+VALUES(1, 'Criminal lawsuit 1','This is a criminal lawsuit','Open','New York','criminal'),
+      (2, 'Immigration lawsuit 1','This is an immiration lawsuit','Open','Albany','immigration'),
+      (3, 'Immigration lawsuit 2','This is another immigartion lawsuit','Pending','New York','immigration'),
+      (4, 'Business lawsuit 1','Here is the business lawsuit','Closed','Buffolo','business'),
+      (5, 'Business lawsuit 2','Another business lawsuit','Closed','Syracuse','business'),
+      (6, 'Family lawsuit 1','This is a family lawsuit','Pending','Rochester','family'),
+      (7, 'Family lawsuit 2','This is another family lawsuit','See Department Manager','Newyork','family'),
+      (8, 'Criminal lawsuit 2','This is a criminal lawsuit','Open','Albany','criminal'),
+      (9, 'Criminal lawsuit 3','This is a criminal lawsuit','Open','Utica','criminal');
       

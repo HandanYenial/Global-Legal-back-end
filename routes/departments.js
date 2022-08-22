@@ -26,7 +26,7 @@ const router = new express.Router();
 router.post("/" , ensureAdmin, async function(req,res,next){ //only admin can create a new department
     try{
         const validator = jsonschema.validate(req.body , departmentNewSchema); //we use jsonschema to validate the data
-        if(!validator.valid){ //if the data is not valid(if the user entered a number instead of a string for example)
+        if(!validator.valid){ //if the data is not valid(if the employee entered a number instead of a string for example)
             const errs = validator.errors.map(e => e.stack); //we map the errors to a new array
             throw new BadRequestError(errs); //and throw a new BadRequestError: 400 
         }
@@ -44,10 +44,10 @@ router.post("/" , ensureAdmin, async function(req,res,next){ //only admin can cr
  * Search filter : handle
  */
 
-router.get("/" ,ensureLoggedIn, async function(req,res,next){ //only logged in users can see the departments
+router.get("/" ,ensureLoggedIn, async function(req,res,next){ //only logged in employees can see the departments
     try{
         const validator = jsonschema.validate(req.query, departmentSearchSchema); //we use jsonschema to validate the data
-        if(!validator.valid){ //if the data is not valid(if the user entered a number instead of a string for example)
+        if(!validator.valid){ //if the data is not valid(if the employee entered a number instead of a string for example)
             const errs = validator.errors.map(e =>e.stack); //we map the errors to a new array
             throw new BadRequestError(errs); //and throw a new BadRequestError: 400
         }
@@ -65,7 +65,7 @@ router.get("/" ,ensureLoggedIn, async function(req,res,next){ //only logged in u
  * Authorization required: employee
 */
 
-router.get("/:handle" , ensureLoggedIn , async function(req,res,next){ //only logged in users can see the department by searching for its handle
+router.get("/:handle" , ensureLoggedIn , async function(req,res,next){ //only logged in employees can see the department by searching for its handle
     try{
         const department = await Department.get(req.params.handle); //we get the department by its handle(get is a function in the Department model)
         return res.json({department}); //and return the department
@@ -83,12 +83,12 @@ router.get("/:handle" , ensureLoggedIn , async function(req,res,next){ //only lo
 
 router.patch("/:handle", ensureAdmin, async function(req,res,next){ //only admin can update a department
     try{
-        const validator = jsonschema.validate(req.body, companyUpdateSchema); //we use jsonschema to validate the data
-        if(!validator.valid){ //if the data is not valid(if the user entered a number instead of a string for example)
+        const validator = jsonschema.validate(req.body, departmentUpdateSchema); //we use jsonschema to validate the data
+        if(!validator.valid){ //if the data is not valid(if the employees entered a number instead of a string for example)
             const errs = validator.errors.map(e => e.stack); //we map the errors to a new array
             throw new BadRequestError(errs);
         }
-        const department = await Departments.update(req.params.handle , req.body); //if the data is valid, we update the department(update is a function in the Department model)
+        const department = await Department.update(req.params.handle , req.body); //if the data is valid, we update the department(update is a function in the Department model)
         return res.json({ department }); //and return the updated department
     } catch(err){
         return next(err);

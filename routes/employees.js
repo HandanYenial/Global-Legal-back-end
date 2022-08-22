@@ -5,8 +5,8 @@
 const express = require("express");
 const router = express.Router();
 const jsonschema = require("jsonschema");
-const { badRequest, BadRequestError } = require("../expressError");
-const { ensureLoggedIn, ensureAdmin, ensureCorrectEmployeeOrAdmin} = require("../middleware/auth");
+const { BadRequestError } = require("../expressError");
+const { ensureAdmin, ensureCorrectEmployeeOrAdmin} = require("../middleware/auth");
 const Employee = require("../models/employee");
 const employeeNewSchema = require("../schemas/employeeNew.json");
 const employeeUpdateSchema = require("../schemas/employeeUpdate.json");
@@ -107,7 +107,7 @@ router.delete("/:username" , ensureCorrectEmployeeOrAdmin, async function(req,re
  * Either admin can assign a lwasuit to the lawyer/paralegal or the lawyer/paralegal can choose a lawsuit to work on.
  */
 
-router.post("/:username/:lawsuit/:id" , ensureCorrectUserOrAdmin, async function(req,res,next){
+router.post("/:username/:lawsuits/:id" , ensureCorrectEmployeeOrAdmin, async function(req,res,next){
     try{
         const lawsuitId = +req.params.id; //get the lawsuit id
         await Employee.addLawsuit(req.params.username, lawsuitId); //add the lawsuit to the employee's list of lawsuits

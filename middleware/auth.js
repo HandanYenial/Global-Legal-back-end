@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken"); //Import JWT
 const { SECRET_KEY } = require("../config"); //Import secret key
 const { UnauthorizedError } = require("../expressError"); //Import error
 
-/** Middleware to authenticate user. 
+/** Middleware to authenticate employee. 
  * If a token is provided, verify the token
  * If the the provided token is valid store the token payload on res.locals
  * (this will include the username and isAdmin)
@@ -18,7 +18,7 @@ function authenticateJWT(req,res,next){
         const authHeader = req.headers && req.headers.autherization;//Get the auth header
         if(authHeader){
             const token = authHeader.replace(/^[Bb]earer /, "").trim(); //Remove Bearer from token
-            res.locals.user = jwt.verify(token, SECRET_KEY);//Verify token
+            res.locals.employee = jwt.verify(token, SECRET_KEY);//Verify token
         }
         return next();
     } catch(err){
@@ -31,7 +31,7 @@ function authenticateJWT(req,res,next){
 
 function ensureLoggedIn(req,res,next){
     try{
-        if(!res.locals.user) throw new UnauthorizedError();
+        if(!res.locals.employee) throw new UnauthorizedError();
         return next();
     } catch(err){
         return next(err);
@@ -43,7 +43,7 @@ function ensureLoggedIn(req,res,next){
 
 function ensureAdmin(req,res,next){
     try{
-        if(!res.locals.user || !res.locals.user.isAdmin) {
+        if(!res.locals.employee || !res.locals.employee.isAdmin) {
             throw new UnauthorizedError();
         }
         return next();
@@ -57,8 +57,8 @@ function ensureAdmin(req,res,next){
 
 function ensureCorrectEmployeeOrAdmin(req,res,next){
     try{
-        const user = res.locals.user;
-        if(!(user && (user.isAdmin || user.username === req.params.username))){
+        const employee = res.locals.employee;
+        if(!(employee && (employee.isAdmin || employee.username === req.params.username))){
             throw new UnauthorizedError();
         }
         return next();

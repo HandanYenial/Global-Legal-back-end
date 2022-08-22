@@ -55,7 +55,7 @@ class Department {
 
             if (name){
                 queryValues.push(`%${name}%`);
-                whereExpressions.push(`name ILIKE $${queryValues.length}`);//ILIKE: lawsuit insensitive
+                whereExpressions.push(`name ILIKE ${queryValues.length}`);//ILIKE: lawsuit insensitive
             }
 
             if (whereExpressions.length > 0){
@@ -90,7 +90,11 @@ class Department {
             }
 
             const lawsuitsRes = await db.query(
-                `SELECT id, title, description, status, location
+                `SELECT id,
+                title,
+                description,
+                status,
+                location
                 FROM lawsuits
                 WHERE department_handle = $1
                 ORDER BY id`,
@@ -112,7 +116,8 @@ class Department {
                 data,
                 {
                     numEmployees : "num_employees",
-                    description : "description"
+                    description : "description",
+                    status : "status",
                 });
             const handleVarIdx = "$" + (values.length + 1);
 
@@ -122,7 +127,8 @@ class Department {
                               RETURNING handle,
                                         name,
                                         num_employees AS "numEmployees",
-                                        description`;
+                                        description
+                                        status`;
             const result = await db.query(querySql, [...values, handle]);
             const department = result.rows[0];
 

@@ -18,8 +18,8 @@ class Employee {
         const result = await db.query(
            `SELECT username,
                     password,
-                    first_name AS "firstname",
-                    last_name as "lastname",
+                    first_name AS "firstName",
+                    last_name as "lastName",
                     email,
                     is_admin as "isAdmin"
             FROM employees
@@ -31,10 +31,10 @@ class Employee {
 
         if(employee){
             //compare hashed password with the new one in the database
-            const isValid = await bcrypt.compare(password, employee.password);
-            if(isValid === true){
-                delete employee.password;
-                return employee;
+            const isValid = await bcrypt.compare(password, employee.password); //true or false
+            if(isValid === true){ //if password is valid
+                delete employee.password; 
+                return employee; 
             }
         }
         throw new UnauthorizedError("Invalid username/password");
@@ -44,7 +44,7 @@ class Employee {
     //returns {username, first_name, last_name, email, is_admin}
     //BadRequestError: if employee already in database
 
-    static async register({username, password, firstname, lastname,email,isAdmin}){
+    static async register({username, password, firstName, lastName,email,isAdmin}){
         const duplicateCheck = await db.query(
             `SELECT username
             FROM employees
@@ -56,14 +56,20 @@ class Employee {
             throw new BadRequestError(`Duplicate username: ${username}`);
         }
 
-        const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+        const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR); //hash password
 
         const result = await db.query(
-           `INSERT INTO employees(username, password,first_name,last_name,email,is_admin)
+           `INSERT INTO employees(
+                 username,
+                 password,
+                 first_name,
+                 last_name,
+                 email,
+                 is_admin)
             VALUES ($1,$2,$3,$4,$5,$6)
             RETURNING
-            username, first_name AS "firstname", lastname AS "lastname", email, is_admin AS "isAdmin"`,
-            [username , hashedPassword, firstname, lastname, email, isAdmin],
+            username,first_name AS "firstName",lastname AS "lastName",email,is_admin AS "isAdmin"`,
+            [username , hashedPassword, firstName, lastName, email, isAdmin],
         );
         const employee = result.rows[0];
         return employee;
@@ -75,9 +81,9 @@ class Employee {
     static async findAll(){
         const result =await db.query(
             `SELECT username,
-                    first_name AS "firstname",
-                    last_name AS lastname,
-                    email
+                    first_name AS "firstName",
+                    last_name AS lastName,
+                    email,
                     is_admin AS "isAdmin"
             FROM employees
             ORDER BY username`,
@@ -91,28 +97,28 @@ class Employee {
         //NotFoundError : if employee not found
 
     static async get(username){
-        const employeeREs = await db.query(
+        const employeeRes = await db.query(
             `SELECT username,
-                    first_name AS "firstname",
-                    last_name AS "lastname",
+                    first_name AS "firstName",
+                    last_name AS "lastName",
                     email,
                     is_admin AS "isAdmin"
             FROM employees
             WHERE username = $1`,
             [username],
         );
-        const employee = userRes.rows[0];
+        const employee = employeeRes.rows[0];
 
-        if (!user) throw new NotFoundError(`No employee: ${username}`);
+        if (!employee) throw new NotFoundError(`No employee: ${username}`);
 
-        const assignedlawsuitsRes = await db.query(
-            `SELECT a.job_id
+        const employeeLawsuitsRes = await db.query(
+            `SELECT a.lawsuit_id
             FROM assignments AS a
             WHERE a.username = $1`,
             [username]
             );
         
-        employee.assignments = assignedlawsuitsRes.rows.map(a => a.lawsuit_id);
+        employee.assignments = employeeLawsuitsRes.rows.map(a => a.lawsuit_id);
         return employee;
     }
 
@@ -131,8 +137,8 @@ class Employee {
         const {setCols, values} = sqlForPartialUpdate(
             data,
             {
-                firstname : "first_name",
-                lastname : "last_name",
+                firstName : "first_name",
+                lastName : "last_name",
                 isAdmin : "is_admin",
             }
         );
@@ -142,8 +148,8 @@ class Employee {
                           SET ${setCols}
                           WHERE username = ${usernameVarIdx}
                           RETURNING username,
-                                    first_name AS "firstname",
-                                    last_name AS "lastname",
+                                    first_name AS "firstName",
+                                    last_name AS "lastName",
                                     email,
                                     is_admin AS "isAdmin"`;
         const result = await db.query(querySql, [...values, username]);
@@ -159,7 +165,8 @@ class Employee {
 
     static async remove(username){
         let result = await db.query(
-            `DELETE FROM employees
+            `DELETE 
+            FROM employees
             WHERE username = $1
             RETURNING username`,
             [username],
@@ -169,7 +176,7 @@ class Employee {
         if(!employee) throw new NotFoundError(`No employee: ${username}`);
     }
 
-    /**Apply for job: update db
+    /**Assign for lawsuit: update db
      * returns udnefined
      * username: username of employee
      * lawsuitId : lawsuit_id

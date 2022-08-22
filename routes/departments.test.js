@@ -60,7 +60,7 @@ describe("POST/departments" , function(){
 
     test("bad request with invalid data" , async function(){
         const response = await request(app)
-                .post("departments")
+                .post("/departments")
                 .send({
                     ...newDepartment,
                     num_employees: "not-a-number",
@@ -142,7 +142,7 @@ describe("GET/departments/:handle" , function(){
     });
 
     test("works for anon: departments with or not lawsuits", async function(){
-        const response = await request(app).get(`/departmens/d2`);
+        const response = await request(app).get(`/departments/d2`);
         expect(response.body).toEqual({
             department:{
                 handle: "d2",
@@ -154,7 +154,7 @@ describe("GET/departments/:handle" , function(){
         });
     });
 
-    test("not found for no such company" , async function(){
+    test("not found for no such department" , async function(){
         const response = await request(app).get(`/departments/nope`);
         expect(response.statusCode).toEqual(404);
     });

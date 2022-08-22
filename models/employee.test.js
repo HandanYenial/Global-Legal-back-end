@@ -165,11 +165,11 @@ describe("update", function(){
     });
 
     test("works  :set password" , async function(){
-        let job = await Employee.update("e1", {
+        let lawsuit = await Employee.update("e1", {
             password: "new",
         });
 
-        expect(job).toEqual({
+        expect(lawsuit).toEqual({
             username: "e1",
             firstName: "Employee1",
             lastName: "Employee1",
@@ -220,9 +220,9 @@ describe("remove", function(){
     });
 });
 
-describe("assignToLawsuit" ,function(){
+describe("addLawsuit" ,function(){
     test("works" , async function(){
-        await Employee.assignToLawsuit("e1", testLawsuitIds[1]);
+        await Employee.addLawsuit("e1", testLawsuitIds[1]);
         const res = await db.query(
             "SELECT * FROM assignments WHERE lawsuit_id = $1", [testLawsuitIds[1]]
         );
@@ -232,9 +232,9 @@ describe("assignToLawsuit" ,function(){
         }]);
     });
 
-    test("not found if there is no such a job" , async function(){
+    test("not found if there is no such a lawsuit" , async function(){
         try{
-            await Employee.assignToLawsuit("e1", 0);
+            await Employee.addLawsuit("e1", 0);
             fail();
         } catch(err){
             expect(err instanceof NotFoundError).toBeTruthy();
@@ -243,7 +243,7 @@ describe("assignToLawsuit" ,function(){
 
     test("not found if there is no such a employee" , async function(){
         try{
-            await Employee.assignToLawsuit("nope", testLawsuitIds[0], "assigned");
+            await Employee.addLawsuit("nope", testLawsuitIds[0], "assigned");
             fail();
         } catch(err){
             expect(err instanceof NotFoundError).toBeTruthy();

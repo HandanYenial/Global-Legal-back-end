@@ -9,15 +9,15 @@
 const jwt = require("jsonwebtoken");  //npm install jsonwebtoken
 const { SECRET_KEY } = require("../config"); 
 
-/** return signed JWT from user data. */
+/** return signed JWT from employee data. */
 
-function createToken(user) { 
-  console.assert(user.isAdmin !== undefined, 
-      "createToken passed user without isAdmin property");
+function createToken(employee) { 
+  console.assert(employee.isAdmin !== undefined, 
+      "createToken passed employee without isAdmin property");
 
   let payload = { //payload is a json object that is encoded in the token.
-    username: user.username, 
-    isAdmin: user.isAdmin || false, 
+    username: employee.username, 
+    isAdmin: employee.isAdmin || false, 
   };
 
   return jwt.sign(payload, SECRET_KEY); //sign the payload with the secret key.
