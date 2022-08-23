@@ -18,9 +18,11 @@ class Lawsuit {
                 description,
                 status,
                 location,
-                department_handle)
-            VALUES ($1,$2,$3,$4,$5)
-            RETURNING id, title, description, status, location, department_handle AS "departmentHandle"`,
+                department_handle
+                created_at,
+                updated_at)
+            VALUES ($1,$2,$3,$4,$5,to_timestamp(${ Date.now()}),to_timestamp(${ Date.now()}))
+            RETURNING id, title, description, status, location, department_handle AS "departmentHandle", created_at AS "createdAt", updated_at AS "updatedAt"`,
             [
                 data.title,
                 data.description,
@@ -124,7 +126,8 @@ class Lawsuit {
                                       description,
                                       status,
                                       location,
-                                      department_handle AS "departmentHandle"`;
+                                      department_handle AS "departmentHandle",
+                                      updated_at AS "updatedAt"`;
           const result = await db.query(querySql, [...values, id]);
           const lawsuit = result.rows[0];
     
