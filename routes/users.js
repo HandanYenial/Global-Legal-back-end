@@ -53,7 +53,7 @@ router.get("/" , ensureAdmin, async function(req,res,next){
 /**GET/username 
  * Get information about a specific user.
  * Returns {user: {username, firstName, lastName, email, isAdmin, lawsuits}}
- * where lawsuit is{id, title,description, status,location,department_id}
+ * where lawsuit is{id, title,description, comment,location,department_id}
  * Autherization required: admin or correct user
  */
 

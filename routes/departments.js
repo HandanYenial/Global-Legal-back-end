@@ -61,7 +61,7 @@ router.get("/" ,ensureLoggedIn, async function(req,res,next){ //only logged in e
 
 /**GET /[handle]
  * { department : {handle, name, num_employees, description, lawsuits} }
- * where lawsuits is[{id,title,description,status,location,department_handle}]
+ * where lawsuits is[{id,title,description,comment,location,department_handle}]
  * Authorization required: employee
 */
 

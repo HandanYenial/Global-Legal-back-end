@@ -5,7 +5,13 @@
     "default": {},
     "title": "Root Schema",
     "required": [
-        "title"
+        "title",
+        "description",
+        "comment",
+        "location",
+        "department_handle",
+        "created_at",
+        "updated_at"
     ],
     "properties": {
         "title": {
@@ -24,10 +30,10 @@
                 "Lawsuit description"
             ]
         },
-        "status": {
+        "comment": {
             "type": "string",
             "default": "",
-            "title": "The status Schema",
+            "title": "The comment Schema",
             "examples": [
                 "open"
             ]
@@ -68,7 +74,7 @@
     "examples": [{
         "title": "Lawsuit",
         "description": "Lawsuit description",
-        "status": "open",
+        "comment": "open",
         "location": "location",
         "department_handle": "any department",
         "created_at": "2020-05-20T12:00:00.000Z",

@@ -20,9 +20,11 @@ describe("create", function(){
     let newLawsuit = {
         title:"New Lawsuit",
         description:"New Lawsuit Description",
-        status:"New Lawsuit Status",
+        comment:"New Lawsuit",
         location:"New Lawsuit Location",
         departmentHandle:"d1",
+        createdAt:"2021-01-01",
+        updatedAt:"2021-01-01"
     };
 
     test("works" , async function(){
@@ -31,9 +33,11 @@ describe("create", function(){
             id: expect.any(Number),
             title: "New Lawsuit",
             description: "New Lawsuit Description",
-            status: "New Lawsuit Status",
+            comment: "New Lawsuit",
             location: "New Lawsuit Location",
-            departmentHandle: "d1"
+            departmentHandle: "d1",
+            createdAt: "2021-01-01",
+            updatedAt: "2021-01-01"
         });
     });
 });
@@ -47,28 +51,31 @@ describe("findAll", function(){
                 id: testLawsuitIds[0],
                 title: "Lawsuit1",
                 description: "Lawsuit1 Description",
-                status: "Lawsuit1 Status",
+                comment: "Lawsuit1",
                 location: "Lawsuit1 Location",
                 departmentHandle: "d1",
-                departmentName: "Department1",
+                createdAt: "2021-01-01",
+                updatedAt: "2021-01-01"
             },
             {
                 id: testLawsuitIds[1],
                 title: "Lawsuit2",
                 description: "Lawsuit2 Description",
-                status: "Lawsuit2 Status",
+                comment: "Lawsuit2",
                 location: "Lawsuit2 Location",
                 departmentHandle: "d2",
-                departmentName: "Department2",
+                createdAt: "2021-01-01",
+                updatedAt: "2021-01-01"  
             },
             {
                 id: testLawsuitIds[2],
                 title: "Lawsuit3",
                 description: "Lawsuit3 Description",
-                status: "Lawsuit3 Status",
+                comment: "Lawsuit3",
                 location: "Lawsuit3 Location",
                 departmentHandle: "d3",
-                departmentName: "Department3",
+                createdAt: "2021-01-01",
+                updatedAt: "2021-01-01"
             },
         ]);
     });
@@ -80,10 +87,11 @@ describe("findAll", function(){
                 id: testLawsuitIds[1],
                 title: "Lawsuit2",
                 description: "Lawsuit2 Description",
-                status: "Lawsuit2 Status",
+                comment: "Lawsuit2",
                 location: "Lawsuit2 Location",
                 departmentHandle: "d2",
-                departmentName: "Department2",
+                createdAt: "2021-01-01",
+                updatedAt: "2021-01-01"
             },
         ]);
     });
@@ -96,14 +104,16 @@ describe("get" ,function(){
             id: testLawsuitIds[0],
             title: "Lawsuit1",
             description: "Lawsuit1 Description",
-            status: "Lawsuit1 Status",
+            comment: "Lawsuit1",
             location: "Lawsuit1 Location",
             department:{
                 handle: "d1",
                 name: "Department1",
                 num_employees: 1,
                 description: "Department1 Description",
-            }
+            },
+            createdAt: "2021-01-01",
+            updatedAt: "2021-01-01"
         });
     });
 
@@ -122,8 +132,9 @@ describe("update" , function(){
     let updateData = {
         title: "Updated Lawsuit",
         description: "Updated Lawsuit Description", 
-        status: "Updated Lawsuit Status",
-        location: "Updated Lawsuit Location",   
+        comment: "Updated Lawsuit",
+        location: "Updated Lawsuit Location",  
+        updated_at:"2021-01-01" 
     };
 
     test("works", async function(){
