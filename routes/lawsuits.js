@@ -12,8 +12,8 @@ const lawsuitSearchSchema = require("../schemas/lawsuitSearch.json");
 const e = require("express");
 
 /**POST /
- * lawsuit should be{title,description,comment,location,department_hanle}
- * Returns {lawsuit: {id, title, description, comment, location, department_handle}}
+ * lawsuit should be{title,description,comment,location,category_hanle}
+ * Returns {lawsuit: {id, title, description, comment, location, category_handle}}
  * Authorization required: admin
  */
 
@@ -32,7 +32,7 @@ router.post("/" , ensureAdmin, async function(req,res,next){
 });
 
 /**GET /
- * Returns {lawsuits: [{id, title, description, comment, location, department_handle}, ...]}
+ * Returns {lawsuits: [{id, title, description, comment, location, category_handle}, ...]}
  * Search filter: title
  * Authorization required: user or admin
  */
@@ -53,8 +53,8 @@ router.get("/" , ensureLoggedIn , async function(req,res,next){
 
 /** GET/id
  * Get a lawsuit details by id
- * Returns {lawsuit: {id, title, description, comment, location, department}}
- *    where department is {handle, name, num_employees,description}
+ * Returns {lawsuit: {id, title, description, comment, location, category}}
+ *    where category is {handle, name, num_employees,description}
  * Authorization required: user or admin
  */
 
@@ -69,9 +69,9 @@ router.get("/:id" , ensureLoggedIn , async function(req,res,next){
 
 /**PATCH/:id
  * Update a lawsuit by id
- * Returns {lawsuit: {id, title, description, comment, location, department_handle}}
+ * Returns {lawsuit: {id, title, description, comment, location, category_handle}}
  * Authorization required: admin
- * Data can include: {title, description, comment, location, department_handle}
+ * Data can include: {title, description, comment, location, category_handle}
  */
 
 router.patch("/:id" , ensureAdmin, async function(req,res,next){

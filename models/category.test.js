@@ -2,7 +2,7 @@
 
 const db = require("../db.js");
 const { BadRequestError, NotFoundError } = require("../expressError");
-const Department = require("./department.js");
+const Category = require("./category.js");
 const {
   commonBeforeAll,
   commonBeforeEach,
@@ -17,23 +17,23 @@ afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
 describe("create" , function(){
-    const newDepartment = {
+    const newCategory = {
         handle : "new",
         name : "New",
         numEmployees : 25,
-        description : "New department",
+        description : "New category",
     };
 
     test("works", async function(){
-        let department = await Department.create(newDepartment);
-        expect(department).toEqual(newDepartment);
+        let category = await Category.create(newCategory);
+        expect(category).toEqual(newCategory);
 
         const result = await db.query(
             `SELECT handle,
                     name,
                     num_employees,
                     description
-            FROM departments
+            FROM categories
             WHERE handle = 'new'`
         );
         expect(result.rows).toEqual([
@@ -41,15 +41,15 @@ describe("create" , function(){
                 handle : "new",  
                 name : "New",
                 numEmployees : 25,
-                description : "New department",
+                description : "New category",
             },
         ]);
     });
 
     test("bad request" , async function(){
         try{
-            await Department.create(newDepartment);
-            await Department.create(newDepartment);
+            await Category.create(newCategory);
+            await Category.create(newCategory);
             fail();
         } catch(err){
             expect(err instanceof BadRequestError).toBeTruthy();
@@ -59,66 +59,66 @@ describe("create" , function(){
 
 describe("findAll" , function(){
     test("works for all" , async function(){
-        let departments = await Department.findAll();
-        expect(departments).toEqual([
+        let categories = await Category.findAll();
+        expect(categories).toEqual([
             {
-                handle : "d1",
-                name : "Department 1",
+                handle : "c1",
+                name : "category 1",
                 numEmployees : 25,
-                description : "Department 1 Description",
+                description : "category 1 Description",
             },
             {
-                handle : "d2",
-                name : "Department 2",
+                handle : "c2",
+                name : "category 2",
                 numEmployees : 25,
-                description : "Department 2 Description",
+                description : "category 2 Description",
             },
             {
-                handle : "d3",
-                name : "Department 3",
+                handle : "c3",
+                name : "category 3",
                 numEmployees : 25,
-                description : "Department 3 Description",
+                description : "category 3 Description",
             },
         ]);
     });
 
     test("works for filter by name" , async function(){
-        let departments = await Department.findAll({name : "Department 1"});
-        expect(departments).toEqual([
+        let categories = await Category.findAll({name : "category 1"});
+        expect(categories).toEqual([
             {
-                handle : "d1",
-                name :"Department 1",
+                handle : "c1",
+                name :"category 1",
                 numEmployees : 25,
-                description : "Department 1 Description",
+                description : "category 1 Description",
             },
         ]);
     });
 
     test("works for filter by name with no match" , async function(){
-        let departments = await Department.findAll({name : "nope"});
-        expect(departments).toEqual([]);
+        let categories = await Category.findAll({name : "nope"});
+        expect(categories).toEqual([]);
     });
 });
 
 describe("get" , function(){
     test("works" , async function(){
-        let department = await Department.get("d1");
-        expect(department).toEqual({
+        let category = await Category.get("d1");
+        expect(category).toEqual({
             handle : "d1",
-            name : "Department 1",
+            name : "category 1",
             numEmployees : 25,
-            description : "Department 1 Description",
+            description : "category 1 Description",
             lawsuits :[
-                {id: testLawsuitIds[0], title: "Lawsuit1", description: "Lawsuit1 description", comment: "open", location: "New York", departmentHandle: "legal"},
-                {id: testLawsuitIds[1], title: "Lawsuit2", description: "Lawsuit2 description", comment: "open", location: "New York", departmentHandle: "legal"},
-                {id: testLawsuitIds[2], title: "Lawsuit3", description: "Lawsuit3 description", comment: "open", location: "New York", departmentHandle: "legal"},
+                {id: testLawsuitIds[0], title: "Lawsuit1", description: "Lawsuit1 description", comment: "open", location: "New York", categoryHandle: "legal"},
+                {id: testLawsuitIds[1], title: "Lawsuit2", description: "Lawsuit2 description", comment: "open", location: "New York", categoryHandle: "legal"},
+                {id: testLawsuitIds[2], title: "Lawsuit3", description: "Lawsuit3 description", comment: "open", location: "New York", categoryHandle: "legal"},
             ],
         });
     });
 
-    test("not found if no such department" , async function(){
+    test("not found if no such category" , async function(){
         try{
-            await Department.get("nope");
+            await Category.get("nope");
             fail();
         } catch(err){
             expect(err instanceof NotFoundError).toBeTruthy();
@@ -131,12 +131,12 @@ describe("update" , function(){
     const updateData = {
         name : "Updated",
         numEmployees : 25,
-        description : "Updated department",
+        description : "Updated category",
     };
 
     test("works" , async function(){
-        let department = await Department.update("d1, updateData");
-        expect(department).toEqual({
+        let category = await Category.update("c1, updateData");
+        expect(category).toEqual({
             handle : "d1",
             ...updateData,
         });
@@ -146,20 +146,20 @@ describe("update" , function(){
                     name,
                     num_employees,
                     description
-            FROM departments    
+            FROM categories    
             WHERE handle = 'd1'`
         );
         expect(result.rows).toEqual([{
             handle : "d1",
             name: "Updated",
             numEmployees : 25,
-            description : "Updated department",
+            description : "Updated category",
         }]);
     });
 
-    test("not found if there is no such department" , async function(){
+    test("not found if there is no such category" , async function(){
         try{
-            await Department.update("nope", updateData);
+            await Category.update("nope", updateData);
             fail();
         } catch(err){
             expect(err instanceof NotFoundError).toBeTruthy();
@@ -169,7 +169,7 @@ describe("update" , function(){
 
     test("bad request with no data" , async function(){
         try{
-            await Department.update("d1" , {});
+            await Category.update("c1" , {});
             fail();
         } catch(err){
             expect(err instanceof BadRequestError).toBeTruthy();
@@ -179,16 +179,16 @@ describe("update" , function(){
 
 describe("remove" , function(){
     test("works" , async function(){
-        await Department.remove("d1");
+        await Category.remove("c1");
         const res = await db.query(
-            "SELECT handle FROM departments WHERE handle = 'd1'"
+            "SELECT handle FROM categories WHERE handle = 'c1'"
         );
         expect(res.rows.length).toEqual(0);
     });
 
-    test("not found if no such department" , async function(){
+    test("not found if no such category" , async function(){
         try{
-            await Department.remove("nope");
+            await Category.remove("nope");
             fail();
         } catch(err){
             expect(err instanceof NotFoundError).toBeTruthy();

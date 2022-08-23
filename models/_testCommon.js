@@ -7,19 +7,19 @@ const testLawsuitIds = [];
 
 async function commonBeforeAll() {
   // noinspection SqlWithoutWhere
-  await db.query("DELETE FROM departments");
+  await db.query("DELETE FROM categories");
   // noinspection SqlWithoutWhere
   await db.query("DELETE FROM users");
 
   await db.query(`
-    INSERT INTO departments(handle, name, num_employees, description)
-    VALUES ('d1', 'D1', 1, 'Desc1'),
-           ('d2', 'D2', 2, 'Desc2'),
-           ('d3', 'D3', 3, 'Desc3')`
+    INSERT INTO categories(handle, name, num_employees, description)
+    VALUES ('c1', 'C1', 1, 'Desc1'),
+           ('c2', 'C2', 2, 'Desc2'),
+           ('c3', 'C3', 3, 'Desc3')`
     );
 
   const resultsLawsuits = await db.query(`
-    INSERT INTO lawsuits (title, description, comment, location, department_handle, created_at, updated_at)
+    INSERT INTO lawsuits (title, description, comment, location, category_handle, created_at, updated_at)
     VALUES ('Lawsuit1', 'Desc1', 'open', 'loc1', 'd1', '2021-01-01', '2021-01-01'),
            ('Lawsuit2', 'Desc2', 'open', 'loc2', 'd2', '2021-01-01', '2021-01-01'),
            ('Lawsuit3', 'Desc3', 'open', 'loc3', 'd3', '2021-01-01', '2021-01-01'),

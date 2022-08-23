@@ -1,4 +1,4 @@
-CREATE TABLE departments(
+CREATE TABLE categories(
     handle VARCHAR(25) PRIMARY KEY, CHECK (handle=lower(handle)),
     name TEXT UNIQUE NOT NULL,
     num_employees INTEGER CHECK (num_employees>=0),
@@ -20,8 +20,8 @@ CREATE TABLE lawsuits(
   description TEXT NOT NULL,
   comment TEXT NOT NULL,
   location TEXT NOT NULL,
-  department_handle VARCHAR(25) NOT NULL 
-    REFERENCES departments ON DELETE CASCADE,
+  category_handle VARCHAR(25) NOT NULL 
+    REFERENCES categories ON DELETE CASCADE,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

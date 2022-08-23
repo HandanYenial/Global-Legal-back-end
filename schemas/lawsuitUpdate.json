@@ -9,7 +9,7 @@
         "description",
         "comment",
         "location",
-        "department_handle",
+        "category_handle",
         "created_at",
         "updated_at"
     ],
@@ -76,7 +76,7 @@
         "description": "Lawsuit description",
         "comment": "open",
         "location": "location",
-        "department_handle": "any department",
+        "category_handle": "any department",
         "created_at": "2020-05-20T12:00:00.000Z",
         "updated_at": "2020-05-20T12:00:00.000Z"
     }]

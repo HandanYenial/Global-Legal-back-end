@@ -12,7 +12,7 @@ VALUES ('user',
         'admin@legal.com',
         TRUE);
 
-INSERT INTO departments(handle,name,num_employees,description)
+INSERT INTO categories(handle,name,num_employees,description)
 VALUES('criminal','Criminal Attorneys',10,'Criminal lawyers (also known as criminal defense lawyers) defend individuals
  who have been accused of committing a crime. They conduct research, analyze lawsuits, and present their findings
  in court in an effort to gain the defendants freedom or negotiate a plea bargain or settlement.'),
@@ -26,7 +26,7 @@ VALUES('criminal','Criminal Attorneys',10,'Criminal lawyers (also known as crimi
   affect businesses, such as taxation, business transactions, and intellectual property rights. The Business Lawyer 
   may also be known as a Corporate Attorney, Corporate Lawyer, or Commercial Lawyer.');
 
-INSERT INTO lawsuits(id,title,description,comment, location,department_handle,created_at,updated_at)
+INSERT INTO lawsuits(id,title,description,comment, location,category_handle,created_at,updated_at)
 VALUES(1, 'Criminal lawsuit 1','This is a criminal lawsuit','Open','New York','criminal','2019-01-01 00:00:00','2019-01-01 00:00:00'),
       (2, 'Immigration lawsuit 1','This is an immiration lawsuit','Open','Albany','immigration', '2019-01-01 00:00:00','2019-01-01 00:00:00'),
       (3, 'Immigration lawsuit 2','This is another immigartion lawsuit','Pending','New York','immigration', '2019-01-01 00:00:00','2019-01-01 00:00:00'),

@@ -9,7 +9,7 @@ const { NotFoundError } = require("./expressError");
 
 const { authenticateJWT } = require("./middleware/auth");
 const authRoutes = require("./routes/auth");
-const departmentsRoutes = require("./routes/departments");
+const categoriesRoutes = require("./routes/categories");
 const usersRoutes = require("./routes/users");
 const lawsuitsRoutes = require("./routes/lawsuits");
 
@@ -23,7 +23,7 @@ app.use(morgan("tiny"));
 app.use(authenticateJWT);
 
 app.use("/auth", authRoutes);
-app.use("/departments", departmentsRoutes);
+app.use("/categories", categoriesRoutes);
 app.use("/users", usersRoutes);
 app.use("/lawsuits", lawsuitsRoutes);
 

@@ -6,22 +6,22 @@ const { sqlForPartialUpdate } = require("../helpers/sql");
 
 
 //realated functions for deparments
-class Department {
-    //Create a law firm department(from data), update database, return new department data
+class Category {
+    //Create a law firm category(from data), update database, return new category data
     //data should be {handle, name, num_employees, description}
     //returns {handle, name, num_employees, description}
-    //throw BadREquestError if department already in database
+    //throw BadREquestError if category already in database
 
     static async create({ handle, name, numEmployees, description }){
         const duplicateCheck = await db.query(
-            `SELECT handle FROM departments WHERE handle = $1`,
+            `SELECT handle FROM categories WHERE handle = $1`,
             [handle]
         );
         if (duplicateCheck.rows[0]){
-            throw new BadRequestError(`Duplicate department: ${handle}`);
+            throw new BadRequestError(`Duplicate category: ${handle}`);
         }
         const result = await db.query(
-            `INSERT INTO departments(
+            `INSERT INTO categories(
                                 handle,
                                 name,
                                 num_employees,
@@ -33,12 +33,12 @@ class Department {
                       description `,
             [handle, name, numEmployees, description],
         );
-        const department = result.rows[0];
+        const category = result.rows[0];
 
-        return department;
+        return category;
         }
 
-        //Find all departments
+        //Find all categories
         //seacrhfilter: name
         //returns [{handle, name, num_employees, description}, ...]
 
@@ -47,7 +47,7 @@ class Department {
                                 name,
                                 num_employees AS "numEmployees",
                                 description
-                         FROM departments`;
+                         FROM categories`;
             let whereExpressions = []; //WHERE name=$1, WHERE name= criminal
             let queryValues =[]; //['criminal'] for search by name
 
@@ -63,30 +63,30 @@ class Department {
             }
             //Finalizing query and return results
             query += " ORDER BY name";
-            const departmentsRes = await db.query(query, queryValues);
-            return departmentsRes.rows;
+            const categoriesRes = await db.query(query, queryValues);
+            return categoriesRes.rows;
         }
 
-        //Given a department handle, return data about department
+        //Given a category handle, return data about category
         //throws NotFoundError if not found
         //returns {handle, name, num_employees, description, lawsuits} 
-        //where lawsuits is [{id, title, description, comment, location, department_handle}, ...]
+        //where lawsuits is [{id, title, description, comment, location, category_handle}, ...]
 
         static async get(handle){
-            const departmentRes = await db.query(
+            const categoryRes = await db.query(
                 `SELECT handle,
                         name,
                         num_employees AS "numEmployees",
                         description
-                FROM departments
+                FROM categories
                 WHERE handle = $1`,
                 [handle] 
             );
 
-            const department = departmentRes.rows[0];
+            const category = categoryRes.rows[0];
 
-            if(!department){
-                throw new NotFoundError(`No department: ${handle}`);
+            if(!category){
+                throw new NotFoundError(`No category: ${handle}`);
             }
 
             const lawsuitsRes = await db.query(
@@ -98,17 +98,17 @@ class Department {
                 created_at AS "createdAt",
                 updated_at AS "updatedAt",
                 FROM lawsuits
-                WHERE department_handle = $1
+                WHERE category_handle = $1
                 ORDER BY id`,
                 [handle],
             );
 
-            department.lawsuits = lawsuitsRes.rows;
+            category.lawsuits = lawsuitsRes.rows;
 
-            return department;
+            return category;
         }
 
-        //Update department data with 'data'
+        //Update category data with 'data'
         //This is a "partial update" --- data can contain just {name, num_employees, description}
         //or any combination of those
         //throws NotFoundError if not found
@@ -123,7 +123,7 @@ class Department {
                 });
             const handleVarIdx = "$" + (values.length + 1);
 
-            const querySql = `UPDATE departments
+            const querySql = `UPDATE categories
                               SET ${setCols}
                               WHERE handle = ${handleVarIdx}
                               RETURNING handle,
@@ -131,28 +131,28 @@ class Department {
                                         num_employees AS "numEmployees",
                                         description`;
             const result = await db.query(querySql, [...values, handle]);
-            const department = result.rows[0];
+            const category = result.rows[0];
 
-            if(!department) throw new NotFoundError(`No department: ${handle}`);
+            if(!category) throw new NotFoundError(`No category: ${handle}`);
 
-            return department;
+            return category;
         }
-        //Delete given department from database; returns undefined
-        //throws NotFoundError if department not found
+        //Delete given category from database; returns undefined
+        //throws NotFoundError if category not found
 
         static async remove(handle){
             const result = await db.query(
                 `DELETE
-                FROM departments
+                FROM categories
                 WHERE handle = $1
                 RETURNING handle`,
                 [handle]
             );
 
-            const department = result.rows[0];
-            if(!department) throw new NotFoundError(`No department: ${handle}`);
+            const category = result.rows[0];
+            if(!category) throw new NotFoundError(`No category: ${handle}`);
         }
         
     }
 
-    module.exports = Department;
+    module.exports = Category;

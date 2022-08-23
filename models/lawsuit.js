@@ -9,7 +9,7 @@ const { NotFoundError } = require("../expressError");
 class Lawsuit {
     //Create a lawsuit from data
     //update the database and return the new lawsuit data
-    //including: {id, title, description, comment,location, department_id}
+    //including: {id, title, description, comment,location, category_id}
 
     static async create(data){
         const result = await db.query(
@@ -18,17 +18,17 @@ class Lawsuit {
                 description,
                 comment,
                 location,
-                department_handle
+                category_handle
                 created_at,
                 updated_at)
             VALUES ($1,$2,$3,$4,$5,to_timestamp(${ Date.now()}),to_timestamp(${ Date.now()}))
-            RETURNING id, title, description, comment, location, department_handle AS "departmentHandle", created_at AS "createdAt", updated_at AS "updatedAt"`,
+            RETURNING id, title, description, comment, location, category_handle AS "categoryHandle", created_at AS "createdAt", updated_at AS "updatedAt"`,
             [
                 data.title,
                 data.description,
                 data.comment,
                 data.location,
-                data.departmentHandle,
+                data.categoryHandle,
             ]
         );
         let lawsuit = result.rows[0];
@@ -36,7 +36,7 @@ class Lawsuit {
     }
 
     //Find all lawsuits(filter by title)
-    //Returns [{id, title, description, comment, location, department_handle}, ...]
+    //Returns [{id, title, description, comment, location, category_handle}, ...]
 
     static async findAll({title} = {}){
         let query = `SELECT l.id,
@@ -44,10 +44,10 @@ class Lawsuit {
                             l.description,
                             l.comment,
                             l.location,
-                            l.department_handle AS "departmentHandle"
-                            d.name AS "departmentName"
+                            l.category_handle AS "categoryHandle"
+                            d.name AS "categoryName"
                     FROM lawsuits AS l
-                        LEFT JOIN departments AS d ON d.handle = l.department_handle`;
+                        LEFT JOIN categories AS d ON d.handle = l.category_handle`;
         let whereExpressions = [];
         let queryValues = [];
 
@@ -69,8 +69,8 @@ class Lawsuit {
     }
 
     //Given a lawsuit id, return data about lawsuit
-    //Returns {id, title, description, comment, location, department_handle}
-    //where department is {handle, name, description, numEmployees}
+    //Returns {id, title, description, comment, location, category_handle}
+    //where category is {handle, name, description, numEmployees}
 
     static async get(id){
         const lawsuitRes = await db.query(
@@ -79,7 +79,7 @@ class Lawsuit {
                     description,
                     comment,
                     location,
-                    department_handle AS "departmentHandle"
+                    category_handle AS "categoryHandle"
             FROM lawsuits
             WHERE id = $1`,
             [id],
@@ -89,18 +89,18 @@ class Lawsuit {
 
     if(!lawsuit) throw new NotFoundError(`No lawsuit: ${id}`);
 
-    const departmentsRes = await db.query(
+    const categoriesRes = await db.query(
         `SELECT handle,
                 name,
                 num_employees AS "numEmployees",
                 description
-        FROM departments
+        FROM categories
         WHERE handle = $1`,
-        [lawsuit.departmentHandle],
+        [lawsuit.categoryHandle],
     );
 
-    delete lawsuit.departmentHandle;
-    lawsuit.department = departmentsRes.rows[0];
+    delete lawsuit.categoryHandle;
+    lawsuit.category = categoriesRes.rows[0];
 
     return lawsuit;
     }
@@ -109,7 +109,7 @@ class Lawsuit {
 //Update lawsuit with 'data'
 //This is a "partial update" --- it's fine if data doesn't contain all the fields;
 //this only changes provided fields.
-//Returns {id, title, description, comment, location, department_handle}
+//Returns {id, title, description, comment, location, category_handle}
 
     static async update(id,data){
        const{ setCols, values } = sqlForPartialUpdate(
@@ -126,7 +126,7 @@ class Lawsuit {
                                       description,
                                       comment,
                                       location,
-                                      department_handle AS "departmentHandle",
+                                      category_handle AS "categoryHandle",
                                       updated_at AS "updatedAt"`;
           const result = await db.query(querySql, [...values, id]);
           const lawsuit = result.rows[0];

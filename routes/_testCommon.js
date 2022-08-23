@@ -3,39 +3,39 @@
 const db = require("../db");
 const { createToken } = require("../helpers/tokens");
 const User = require("../models/user");
-const Department = require("../models/department");
+const Category = require("../models/category");
 const Lawsuit = require("../models/lawsuit");
 
 const testLawsuitIds = []; //Array to store lawsuit ids
 
 async function commonBeforeAll(){
     await db.query("DELETE FROM users"); //Delete all users in the test database
-    await db.query("DELETE FROM departments"); //Delete all departments in the test database
+    await db.query("DELETE FROM categories"); //Delete all categories in the test database
 
-    await Department.create(
+    await Category.create(
         {
-            handle: "d1",
-            name: "Department 1",
+            handle: "c1",
+            name: "Category 1",
             numEmployees: 15,
-            description: "Department 1 description",
+            description: "Category 1 description",
         }
     );
 
-    await Department.create(
+    await Category.create(
         {
-            handle: "d2",
-            name: "Department 2",
+            handle: "c2",
+            name: "Category 2",
             numEmployees: 15,
-            description: "Department 2 description",
+            description: "Category 2 description",
         }
     );
 
-    await Department.create(
+    await Category.create(
         {
-            handle: "d3",
-            name: "Department 3",   
+            handle: "c3",
+            name: "Category 3",   
             numEmployees: 15,
-            description: "Department 3 description",
+            description: "Category 3 description",
         }
     );
 
@@ -46,7 +46,7 @@ async function commonBeforeAll(){
                 description:"Lawsuit1 description",
                 comment:"comment1",
                 location:"location1",
-                department_handle:"d1"
+                category_handle:"c1"
             }
         )).id;
     
@@ -57,7 +57,7 @@ async function commonBeforeAll(){
                 description:"Lawsuit2 description",
                 comment:"comment2",
                 location:"location2",
-                department_handle:"d2"
+                category_handle:"c2"
             }
         )).id;
 
@@ -68,7 +68,7 @@ async function commonBeforeAll(){
                 description:"Lawsuit3 description",
                 comment:"comment3",
                 location:"location3",
-                department_handle:"d3"
+                category_handle:"c3"
             }
         )).id;
 
