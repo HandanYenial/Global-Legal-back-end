@@ -44,12 +44,12 @@
                 "location"
             ]
         },
-        "department_handle": {
+        "category_handle": {
             "type": "string",
             "default": "",
-            "title": "The department_handle Schema",
+            "title": "The category_handle Schema",
             "examples": [
-                "any department"
+                "any category"
             ]
         },
         "created_at": {
@@ -74,7 +74,7 @@
         "description": "Lawsuit description",
         "comment": "open",
         "location": "location",
-        "category_handle": "any department",
+        "category_handle": "any category",
         "created_at": "2020-05-20T12:00:00.000Z",
         "updated_at": "2020-05-20T12:00:00.000Z"
     }]

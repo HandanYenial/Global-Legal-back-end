@@ -10,7 +10,7 @@
             "default": "",
             "title": "The name Schema",
             "examples": [
-                "Health Care Law Department"
+                "Health Care Law"
             ]
         },
         "num_employees": {
@@ -26,13 +26,13 @@
             "default": "",
             "title": "The description Schema",
             "examples": [
-                "Department taking care of health-related lawsuits"
+                "taking care of health-related lawsuits"
             ]
         }
     },
     "examples": [{
-        "name": "Health Care Law Department",
+        "name": "Health Care Law",
         "num_employees": 20,
-        "description": "Department taking care of health-related lawsuits"
+        "description": "taking care of health-related lawsuits"
     }]
 }

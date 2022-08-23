@@ -93,7 +93,7 @@ class User {
 
         // When given a username, return data about user
         //Returns { username, first_name, last_name, email, is_admin , lawsuits }
-        //where lawsuits is {id, title, description, comment, location, department_handle}
+        //where lawsuits is {id, title, description, comment, location, category_handle}
         //NotFoundError : if user not found
 
     static async get(username){

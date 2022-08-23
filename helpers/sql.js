@@ -2,7 +2,7 @@ const { BadRequestError } = require('../expressError'); //BadRequest is a class 
 
 // We use BadRequestError to send a 400-"Bad Request" : No data or invalid data--something not supported by our app.
 
-//We will use this function to convert a JavaScript object to a SQL query, when updating department or user.
+//We will use this function to convert a JavaScript object to a SQL query, when updating category or user.
 // We do that to avoid SQL injection attacks. 
 //function(body of the request , column names of the table)
 //function(whatever field we want to update(object), name of the column in the table)

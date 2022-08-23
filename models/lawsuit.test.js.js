@@ -22,7 +22,7 @@ describe("create", function(){
         description:"New Lawsuit Description",
         comment:"New Lawsuit",
         location:"New Lawsuit Location",
-        departmentHandle:"d1",
+        categoryHandle:"c1",
         createdAt:"2021-01-01",
         updatedAt:"2021-01-01"
     };
@@ -35,7 +35,7 @@ describe("create", function(){
             description: "New Lawsuit Description",
             comment: "New Lawsuit",
             location: "New Lawsuit Location",
-            departmentHandle: "d1",
+            categoryHandle: "c1",
             createdAt: "2021-01-01",
             updatedAt: "2021-01-01"
         });
@@ -53,7 +53,7 @@ describe("findAll", function(){
                 description: "Lawsuit1 Description",
                 comment: "Lawsuit1",
                 location: "Lawsuit1 Location",
-                departmentHandle: "d1",
+                categoryHandle: "c1",
                 createdAt: "2021-01-01",
                 updatedAt: "2021-01-01"
             },
@@ -63,7 +63,7 @@ describe("findAll", function(){
                 description: "Lawsuit2 Description",
                 comment: "Lawsuit2",
                 location: "Lawsuit2 Location",
-                departmentHandle: "d2",
+                categoryHandle: "c2",
                 createdAt: "2021-01-01",
                 updatedAt: "2021-01-01"  
             },
@@ -73,7 +73,7 @@ describe("findAll", function(){
                 description: "Lawsuit3 Description",
                 comment: "Lawsuit3",
                 location: "Lawsuit3 Location",
-                departmentHandle: "d3",
+                categoryHandle: "c3",
                 createdAt: "2021-01-01",
                 updatedAt: "2021-01-01"
             },
@@ -89,7 +89,7 @@ describe("findAll", function(){
                 description: "Lawsuit2 Description",
                 comment: "Lawsuit2",
                 location: "Lawsuit2 Location",
-                departmentHandle: "d2",
+                categoryHandle: "c2",
                 createdAt: "2021-01-01",
                 updatedAt: "2021-01-01"
             },
@@ -106,11 +106,11 @@ describe("get" ,function(){
             description: "Lawsuit1 Description",
             comment: "Lawsuit1",
             location: "Lawsuit1 Location",
-            department:{
-                handle: "d1",
-                name: "Department1",
+            category:{
+                handle: "c1",
+                name: "category1",
                 num_employees: 1,
-                description: "Department1 Description",
+                description: "category1 Description",
             },
             createdAt: "2021-01-01",
             updatedAt: "2021-01-01"
@@ -141,7 +141,7 @@ describe("update" , function(){
         let lawsuit = await Lawsuit.update(testLawsuitIds[0], updateData);
         expect(lawsuit).toEqual({
             id : testLawsuitIds[0],
-            departmentHandle: "d1",
+            categoryHandle: "d1",
             ...updateData,
         });
     });
