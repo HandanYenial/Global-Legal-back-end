@@ -47,6 +47,22 @@
             "examples": [
                 "any department"
             ]
+        },
+        "created_at": {
+            "type": "string",
+            "default": "",
+            "title": "The created_at Schema",
+            "examples": [
+                "2020-05-20T12:00:00.000Z"
+            ]
+        },
+        "updated_at": {
+            "type": "string",
+            "default": "",
+            "title": "The updated_at Schema",
+            "examples": [
+                "2020-05-20T12:00:00.000Z"
+            ]
         }
     },
     "examples": [{
@@ -54,6 +70,8 @@
         "description": "Lawsuit description",
         "status": "open",
         "location": "location",
-        "department_handle": "any department"
+        "department_handle": "any department",
+        "created_at": "2020-05-20T12:00:00.000Z",
+        "updated_at": "2020-05-20T12:00:00.000Z"
     }]
 }
