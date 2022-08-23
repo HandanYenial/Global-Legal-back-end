@@ -46,7 +46,7 @@
         },
         "category_handle": {
             "type": "string",
-            "default": "",
+            "default": "c1",
             "title": "The category_handle Schema",
             "examples": [
                 "any category"

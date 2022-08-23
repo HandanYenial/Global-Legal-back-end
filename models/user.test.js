@@ -134,7 +134,6 @@ describe("get", function(){
             lastName: "user1",
             email: "user1.user.com",
             isAdmin: false,
-            assignments:[testLawsuitIds[0]],
         });
     });
 

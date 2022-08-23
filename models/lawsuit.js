@@ -18,7 +18,7 @@ class Lawsuit {
                 description,
                 comment,
                 location,
-                category_handle
+                category_handle,
                 created_at,
                 updated_at)
             VALUES ($1,$2,$3,$4,$5,to_timestamp(${ Date.now()}),to_timestamp(${ Date.now()}))
@@ -39,15 +39,17 @@ class Lawsuit {
     //Returns [{id, title, description, comment, location, category_handle}, ...]
 
     static async findAll({title} = {}){
-        let query = `SELECT l.id,
-                            l.title,
-                            l.description,
-                            l.comment,
-                            l.location,
-                            l.category_handle AS "categoryHandle"
-                            d.name AS "categoryName"
-                    FROM lawsuits AS l
-                        LEFT JOIN categories AS d ON d.handle = l.category_handle`;
+        let query = `SELECT lawsuit.id,
+                            lawsuit.title,
+                            lawsuit.description,
+                            lawsuit.comment,
+                            lawsuit.location,
+                            lawsuit.category_handle AS "categoryHandle"
+                            lawsuit.created_at AS "createdAt",
+                            lawsuit.updated_at AS "updatedAt",
+                            category.name AS "categoryName"
+                    FROM lawsuits AS lawsuit
+                        LEFT JOIN categories AS category ON category.handle = lawsuit.category_handle`;
         let whereExpressions = [];
         let queryValues = [];
 
@@ -127,6 +129,7 @@ class Lawsuit {
                                       comment,
                                       location,
                                       category_handle AS "categoryHandle",
+                                      created_at AS "createdAt",
                                       updated_at AS "updatedAt"`;
           const result = await db.query(querySql, [...values, id]);
           const lawsuit = result.rows[0];

@@ -99,7 +99,7 @@ describe("GET/categories", function(){
     });
 
 
-    test("filters by handle" , function(){
+    test("filters by handle" , async function(){
         const response = await request(app)
                 .get("/categories")
                 .query({handle:c1});

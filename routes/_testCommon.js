@@ -46,7 +46,7 @@ async function commonBeforeAll(){
                 description:"Lawsuit1 description",
                 comment:"comment1",
                 location:"location1",
-                category_handle:"c1"
+                category_handle:"c1",
             }
         )).id;
     
@@ -57,7 +57,7 @@ async function commonBeforeAll(){
                 description:"Lawsuit2 description",
                 comment:"comment2",
                 location:"location2",
-                category_handle:"c2"
+                category_handle:"c2",
             }
         )).id;
 
@@ -68,7 +68,7 @@ async function commonBeforeAll(){
                 description:"Lawsuit3 description",
                 comment:"comment3",
                 location:"location3",
-                category_handle:"c3"
+                category_handle:"c3",
             }
         )).id;
 
@@ -103,7 +103,7 @@ async function commonBeforeAll(){
         }
     );
 
-    await User.addLawsuit("user1", testLawsuitIds[0]);
+    await User.addLawsuit("user1", testLawsuitIds[1]);
 }
 
 async function commonBeforeEach(){

@@ -20,10 +20,10 @@ async function commonBeforeAll() {
 
   const resultsLawsuits = await db.query(`
     INSERT INTO lawsuits (title, description, comment, location, category_handle, created_at, updated_at)
-    VALUES ('Lawsuit1', 'Desc1', 'open', 'loc1', 'd1', '2021-01-01', '2021-01-01'),
-           ('Lawsuit2', 'Desc2', 'open', 'loc2', 'd2', '2021-01-01', '2021-01-01'),
-           ('Lawsuit3', 'Desc3', 'open', 'loc3', 'd3', '2021-01-01', '2021-01-01'),
-           ('Lawsuit4', 'Desc4', 'open', 'loc4', 'd1', '2021-01-01', '2021-01-01'),
+    VALUES ('Lawsuit1', 'Desc1', 'open', 'loc1', 'c1', '2021-01-01', '2021-01-01'),
+           ('Lawsuit2', 'Desc2', 'open', 'loc2', 'c2', '2021-01-01', '2021-01-01'),
+           ('Lawsuit3', 'Desc3', 'open', 'loc3', 'c3', '2021-01-01', '2021-01-01'),
+           ('Lawsuit4', 'Desc4', 'open', 'loc4', 'c4', '2021-01-01', '2021-01-01')
     RETURNING id`);
   testLawsuitIds.splice(0, 0, ...resultsLawsuits.rows.map(r => r.id));
 

@@ -102,16 +102,16 @@ describe("findAll" , function(){
 
 describe("get" , function(){
     test("works" , async function(){
-        let category = await Category.get("d1");
+        let category = await Category.get("c1");
         expect(category).toEqual({
-            handle : "d1",
+            handle : "c1",
             name : "category 1",
             numEmployees : 25,
             description : "category 1 Description",
             lawsuits :[
-                {id: testLawsuitIds[0], title: "Lawsuit1", description: "Lawsuit1 description", comment: "open", location: "New York", categoryHandle: "legal"},
-                {id: testLawsuitIds[1], title: "Lawsuit2", description: "Lawsuit2 description", comment: "open", location: "New York", categoryHandle: "legal"},
-                {id: testLawsuitIds[2], title: "Lawsuit3", description: "Lawsuit3 description", comment: "open", location: "New York", categoryHandle: "legal"},
+                {id: testLawsuitIds[0], title: "Lawsuit1", description: "Lawsuit1 description", comment: "open", location: "New York", categoryHandle: "c1"},
+                {id: testLawsuitIds[1], title: "Lawsuit2", description: "Lawsuit2 description", comment: "open", location: "New York", categoryHandle: "c2"},
+                {id: testLawsuitIds[2], title: "Lawsuit3", description: "Lawsuit3 description", comment: "open", location: "New York", categoryHandle: "c3"},
             ],
         });
     });
@@ -137,7 +137,7 @@ describe("update" , function(){
     test("works" , async function(){
         let category = await Category.update("c1, updateData");
         expect(category).toEqual({
-            handle : "d1",
+            handle : "c1",
             ...updateData,
         });
 
@@ -147,10 +147,10 @@ describe("update" , function(){
                     num_employees,
                     description
             FROM categories    
-            WHERE handle = 'd1'`
+            WHERE handle = 'c1'`
         );
         expect(result.rows).toEqual([{
-            handle : "d1",
+            handle : "c1",
             name: "Updated",
             numEmployees : 25,
             description : "Updated category",

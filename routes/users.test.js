@@ -378,10 +378,10 @@ describe("POST/users/:username/lawsuits/:id", function(){
 
     test("works: user can assign a lawsuit to themselves", async function(){
         const response = request(app) //make a request to the app
-                        .post(`/users/user2/lawsuits/${testLawsuitIds[1]}`) //post request to users route with the username of user2 and the id lawsuit
+                        .post(`/users/user2/lawsuits/${testLawsuitIds[2]}`) //post request to users route with the username of user2 and the id lawsuit
                         .set("authorization", `Bearer ${u2Token}`); //set the authorization header to the user token
         expect(response.body).toEqual({ //expect the response body to be the following
-            assigned:testLawsuitIds[1]
+            assigned:testLawsuitIds[2]
         });
     });
 
