@@ -27,15 +27,15 @@ VALUES('criminal','Criminal Attorneys',10,'Criminal lawyers (also known as crimi
   may also be known as a Corporate Attorney, Corporate Lawyer, or Commercial Lawyer.');
 
 INSERT INTO lawsuits(id,title,description,comment, location,category_handle,created_at,updated_at)
-VALUES(1, 'Criminal lawsuit 1','This is a criminal lawsuit','Open','New York','criminal','2019-01-01 00:00:00','2019-01-01 00:00:00'),
-      (2, 'Immigration lawsuit 1','This is an immiration lawsuit','Open','Albany','immigration', '2019-01-01 00:00:00','2019-01-01 00:00:00'),
-      (3, 'Immigration lawsuit 2','This is another immigartion lawsuit','Pending','New York','immigration', '2019-01-01 00:00:00','2019-01-01 00:00:00'),
-      (4, 'Business lawsuit 1','Here is the business lawsuit','Closed','Buffolo','business', '2019-01-01 00:00:00','2019-01-01 00:00:00'),
-      (5, 'Business lawsuit 2','Another business lawsuit','Closed','Syracuse','business','2019-01-01 00:00:00','2019-01-01 00:00:00'),
-      (6, 'Family lawsuit 1','This is a family lawsuit','Pending','Rochester','family', '2019-01-01 00:00:00','2019-01-01 00:00:00'),
-      (7, 'Family lawsuit 2','This is another family lawsuit','See Department Manager','Newyork','family', '2019-01-01 00:00:00','2019-01-01 00:00:00'),
-      (8, 'Criminal lawsuit 2','This is a criminal lawsuit','Open','Albany','criminal', '2019-01-01 00:00:00','2019-01-01 00:00:00'),
-      (9, 'Criminal lawsuit 3','This is a criminal lawsuit','Open','Utica','criminal','2019-01-01 00:00:00','2019-01-01 00:00:00');
+VALUES(1, 'Criminal lawsuit 1','This is a criminal lawsuit','Open','New York','criminal','2019-01-01','2019-01-01'),
+      (2, 'Immigration lawsuit 1','This is an immiration lawsuit','Open','Albany','immigration', '2019-01-01','2019-01-01'),
+      (3, 'Immigration lawsuit 2','This is another immigartion lawsuit','Pending','New York','immigration', '2019-01-01','2019-01-01'),
+      (4, 'Business lawsuit 1','Here is the business lawsuit','Closed','Buffolo','business', '2019-01-01','2019-01-01'),
+      (5, 'Business lawsuit 2','Another business lawsuit','Closed','Syracuse','business','2019-01-01','2019-01-01'),
+      (6, 'Family lawsuit 1','This is a family lawsuit','Pending','Rochester','family', '2019-01-01','2019-01-01'),
+      (7, 'Family lawsuit 2','This is another family lawsuit','See Manager','Newyork','family', '2019-01-01','2019-01-01'),
+      (8, 'Criminal lawsuit 2','This is a criminal lawsuit','Open','Albany','criminal', '2019-01-01','2019-01-01'),
+      (9, 'Criminal lawsuit 3','This is a criminal lawsuit','Open','Utica','criminal','2019-01-01','2019-01-01');
       
 INSERT INTO assignments(username, lawsuit_id)
 VALUES('user',1),
