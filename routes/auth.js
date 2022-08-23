@@ -4,12 +4,12 @@
 
 const jsonschema = require("jsonschema");
 
-const Employee = require("../models/employee");
+const User = require("../models/user"); // User model
 const express = require("express");
 const router = new express.Router();
 const { createToken } = require("../helpers/tokens");
-const employeeAuthSchema = require("../schemas/employeeAuth.json");
-const employeeRegisterSchema = require("../schemas/employeeRegister.json");
+const userAuthSchema = require("../schemas/userAuth.json");
+const userRegisterSchema = require("../schemas/userRegister.json");
 const { BadRequestError } = require("../expressError");
 
 /**POST/auth/token 
@@ -20,14 +20,14 @@ const { BadRequestError } = require("../expressError");
 
 router.post("/token" , async function(req,res,next){
     try{
-        const validator = jsonschema.validate(req.body, employeeAuthSchema);
+        const validator = jsonschema.validate(req.body, userAuthSchema);
         if (!validator.valid){
             const errs = validator.errors.map(e => e.stack);
             throw new BadRequestError(errs);
         }
         const { username, password } = req.body;
-        const employee = await Employee.authenticate(username, password);
-        const token = createToken(employee);
+        const user = await User.authenticate(username, password);
+        const token = createToken(user);
         return res.json({ token });
     } catch(err){
         return next(err);
@@ -35,21 +35,21 @@ router.post("/token" , async function(req,res,next){
 });
 
 /**POST /auth/register
- * {employee} => {token}
- * employee should be {username, password, firstName, lastName, email}
+ * {user} => {token}
+ * user should be {username, password, firstName, lastName, email}
  * Returns jwt token which can be used to authenticate further requests
  * Authorization required: none
  */
 
 router.post("/register" , async function(req,res,next){
     try{
-        const validator = jsonschema.validate(req.body, employeeRegisterSchema);
+        const validator = jsonschema.validate(req.body, userRegisterSchema);
         if (!validator.valid){
             const errs = validator.errors.map(e => e.stack);
             throw new BadRequestError(errs);
         }
-        const newEmployee = await Employee.register({...req.body,isAdmin:false});
-        const token = createToken(newEmployee);
+        const newUser = await User.register({...req.body,isAdmin:false});
+        const token = createToken(newUser);
         return res.status(201).json({ token });
     } catch(err){
         return next(err);

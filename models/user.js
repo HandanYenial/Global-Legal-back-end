@@ -6,15 +6,15 @@ const { sqlForPartialUpdate } = require("../helpers/sql");
 const { NotFoundError, BadRequestError, UnauthorizedError } = require("../expressError");
 const { BCRYPT_WORK_FACTOR } = require("../config.js");
 
-//related functions for employees
+//related functions for users
 
-class Employee {
-    //authenticate employee by username and password
+class User {
+    //authenticate user by username and password
     //returns {username,first_name, last_name,email, is_admin}
-    //UnauthorizedError: if employee not found or password wrong
+    //UnauthorizedError: if user not found or password wrong
 
     static async authenticate(username, password){
-        //chek if there is an employee with the username
+        //chek if there is an user with the username
         const result = await db.query(
            `SELECT username,
                     password,
@@ -22,32 +22,32 @@ class Employee {
                     last_name as "lastName",
                     email,
                     is_admin as "isAdmin"
-            FROM employees
+            FROM users
             WHERE username = $1`,
             [username],
         );
 
-        const employee = result.rows[0];
+        const user = result.rows[0];
 
-        if(employee){
+        if(user){
             //compare hashed password with the new one in the database
-            const isValid = await bcrypt.compare(password, employee.password); //true or false
+            const isValid = await bcrypt.compare(password, user.password); //true or false
             if(isValid === true){ //if password is valid
-                delete employee.password; 
-                return employee; 
+                delete user.password; 
+                return user; 
             }
         }
         throw new UnauthorizedError("Invalid username/password");
     }
 
-    //register employee with data
+    //register user with data
     //returns {username, first_name, last_name, email, is_admin}
-    //BadRequestError: if employee already in database
+    //BadRequestError: if user already in database
 
     static async register({username, password, firstName, lastName,email,isAdmin}){
         const duplicateCheck = await db.query(
             `SELECT username
-            FROM employees
+            FROM users
             WHERE username = $1`,
             [username], 
         );
@@ -59,7 +59,7 @@ class Employee {
         const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR); //hash password
 
         const result = await db.query(
-           `INSERT INTO employees(
+           `INSERT INTO users(
                  username,
                  password,
                  first_name,
@@ -71,11 +71,11 @@ class Employee {
             username,first_name AS "firstName",lastname AS "lastName",email,is_admin AS "isAdmin"`,
             [username , hashedPassword, firstName, lastName, email, isAdmin],
         );
-        const employee = result.rows[0];
-        return employee;
+        const user = result.rows[0];
+        return user;
 
         }
-        //Find all employees
+        //Find all users
         //Returns [{username, first_name, last_name, email, is_admin}, ...]
 
     static async findAll(){
@@ -85,49 +85,49 @@ class Employee {
                     last_name AS lastName,
                     email,
                     is_admin AS "isAdmin"
-            FROM employees
+            FROM users
             ORDER BY username`,
             );
-        return result.rows; //return array of employees
+        return result.rows; //return array of users
     }
 
-        // When given a username, return data about employee
+        // When given a username, return data about user
         //Returns { username, first_name, last_name, email, is_admin , lawsuits }
         //where lawsuits is {id, title, description, status, location, department_handle}
-        //NotFoundError : if employee not found
+        //NotFoundError : if user not found
 
     static async get(username){
-        const employeeRes = await db.query(
+        const userRes = await db.query(
             `SELECT username,
                     first_name AS "firstName",
                     last_name AS "lastName",
                     email,
                     is_admin AS "isAdmin"
-            FROM employees
+            FROM users
             WHERE username = $1`,
             [username],
         );
-        const employee = employeeRes.rows[0];
+        const user = userRes.rows[0];
 
-        if (!employee) throw new NotFoundError(`No employee: ${username}`);
+        if (!user) throw new NotFoundError(`No user: ${username}`);
 
-        const employeeLawsuitsRes = await db.query(
+        const userLawsuitsRes = await db.query(
             `SELECT a.lawsuit_id
             FROM assignments AS a
             WHERE a.username = $1`,
             [username]
             );
         
-        employee.assignments = employeeLawsuitsRes.rows.map(a => a.lawsuit_id);
-        return employee;
+        user.assignments = userLawsuitsRes.rows.map(a => a.lawsuit_id);
+        return user;
     }
 
-    //Update employee data with 'data'
+    //Update user data with 'data'
     //This is a "partial update" --- it's fine if data doesn't contain all the fields;
     //this only changes provided fields.
     //Data can include{firstname. lastname, password, email, isAdmin}
     //Returns {username, first_name, last_name, email, is_admin}
-    //NotFoundError: if employee not found
+    //NotFoundError: if user not found
 
     static async update(username,data){
         if(data.password){
@@ -144,7 +144,7 @@ class Employee {
         );
         const usernameVarIdx = "$" + (values.length + 1);
 
-        const querySql = `UPDATE employees
+        const querySql = `UPDATE users
                           SET ${setCols}
                           WHERE username = ${usernameVarIdx}
                           RETURNING username,
@@ -153,12 +153,12 @@ class Employee {
                                     email,
                                     is_admin AS "isAdmin"`;
         const result = await db.query(querySql, [...values, username]);
-        const employee = result.rows[0];
+        const user = result.rows[0];
 
-        if(!employee) throw new NotFoundError(`No employee: ${username}`);
+        if(!user) throw new NotFoundError(`No user: ${username}`);
 
-        delete employee.password;
-        return employee;
+        delete user.password;
+        return user;
     }
 
     //Delete given user from database; returns undefined
@@ -166,19 +166,19 @@ class Employee {
     static async remove(username){
         let result = await db.query(
             `DELETE 
-            FROM employees
+            FROM users
             WHERE username = $1
             RETURNING username`,
             [username],
         );
-        const employee = result.rows[0];
+        const user = result.rows[0];
 
-        if(!employee) throw new NotFoundError(`No employee: ${username}`);
+        if(!user) throw new NotFoundError(`No user: ${username}`);
     }
 
     /**Assign for lawsuit: update db
      * returns udnefined
-     * username: username of employee
+     * username: username of user
      * lawsuitId : lawsuit_id
      * 
      */
@@ -196,13 +196,13 @@ class Employee {
 
         const preCheck2 = await db.query(`
                SELECT username
-               FROM employees
+               FROM users
                WHERE username = $1`,
                [username],
                );
-        const employee = preCheck2.rows[0];
+        const user = preCheck2.rows[0];
 
-        if(!employee) throw new NotFoundError(`There is no such employee : ${username}`);
+        if(!user) throw new NotFoundError(`There is no such user : ${username}`);
 
         await db.query(
               `INSERT INTO assignments (lawsuit_id, username)
@@ -224,13 +224,13 @@ class Employee {
 
         const preCheck2 = await db.query(`
                SELECT username
-               FROM employees
+               FROM users
                WHERE username = $1`,
                [username],
                );
-        const employee = preCheck2.rows[0];
+        const user = preCheck2.rows[0];
 
-        if(!employee) throw new NotFoundError(`There is no such employee : ${username}`);
+        if(!user) throw new NotFoundError(`There is no such user : ${username}`);
 
         await db.query(
               `DELETE FROM assignments
@@ -240,4 +240,4 @@ class Employee {
     }
 }
 
-module.exports = Employee;
+module.exports = User;

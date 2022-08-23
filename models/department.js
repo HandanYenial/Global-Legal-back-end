@@ -70,7 +70,7 @@ class Department {
         //Given a department handle, return data about department
         //throws NotFoundError if not found
         //returns {handle, name, num_employees, description, lawsuits} 
-        //where lawsuits is [{id, title, description, status, location, department_handle}, ...]
+        //where lawsuits is [{id, title, description, comment, location, department_handle}, ...]
 
         static async get(handle){
             const departmentRes = await db.query(
@@ -93,8 +93,10 @@ class Department {
                 `SELECT id,
                 title,
                 description,
-                status,
-                location
+                comment,
+                location,
+                created_at AS "createdAt",
+                updated_at AS "updatedAt",
                 FROM lawsuits
                 WHERE department_handle = $1
                 ORDER BY id`,
@@ -117,7 +119,7 @@ class Department {
                 {
                     numEmployees : "num_employees",
                     description : "description",
-                    status : "status",
+                    
                 });
             const handleVarIdx = "$" + (values.length + 1);
 
@@ -127,8 +129,7 @@ class Department {
                               RETURNING handle,
                                         name,
                                         num_employees AS "numEmployees",
-                                        description
-                                        status`;
+                                        description`;
             const result = await db.query(querySql, [...values, handle]);
             const department = result.rows[0];
 

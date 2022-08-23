@@ -24,7 +24,7 @@ describe("POST/departments" , function(){
     const newDepartment = {
         handle: "new",
         name: "New",
-        num_employees: 1,
+        numEmployees: 1,
         description: "New description",
     }
 
@@ -63,7 +63,7 @@ describe("POST/departments" , function(){
                 .post("/departments")
                 .send({
                     ...newDepartment,
-                    num_employees: "not-a-number",
+                    numEmployees: "not-a-number",
                 })
                 .set("authorization", `Bearer ${adminToken}`);
         expect(response.statusCode).toEqual(400);
@@ -99,21 +99,21 @@ describe("GET/departments", function(){
     });
 
 
-    // test("filters by handle" , function(){
-    //     const response = await request(app)
-    //             .get("/departments")
-    //             .query({handle:d1});
-    //     expect(response.body).toEqual({
-    //         departments:[
-    //             {
-    //                 handle: "d1",
-    //                 name: "Dept1",
-    //                 numEmloyees:1,
-    //                 description: "Desc1",
-    //             },
-    //         ],
-    //     });
-    // });
+    test("filters by handle" , function(){
+        const response = await request(app)
+                .get("/departments")
+                .query({handle:d1});
+        expect(response.body).toEqual({
+            departments:[
+                {
+                    handle: "d1",
+                    name: "Dept1",
+                    numEmloyees:1,
+                    description: "Desc1",
+                },
+            ],
+        });
+    });
 
     test("bad request if invalid filter key" , async function(){
         const response = await request(app)
@@ -133,9 +133,9 @@ describe("GET/departments/:handle" , function(){
                 numEmloyees:1,
                 description: "Desc1",
                 lawsuits:[
-                    {id: testLawsuitIds[0], title: "L1", description: "Description1" , status: "status1" , location: "location1"},
-                    {id: testLawsuitIds[1], title: "L2", description: "Description2" , status: "status2" , location: "location2"},
-                    {id: testLawsuitIds[2], title: "L3", description: "Description3" , status: "status3" , location: "location3"},
+                    {id: testLawsuitIds[0], title: "L1", description: "Description1" , comment: "comment1" , location: "location1" , created_at: expect.any(String), updated_at: expect.any(String)},
+                    {id: testLawsuitIds[1], title: "L2", description: "Description2" , comment: "comment2" , location: "location2" , created_at: expect.any(String), updated_at: expect.any(String)},
+                    {id: testLawsuitIds[2], title: "L3", description: "Description3" , comment: "comment3" , location: "location3" , created_at: expect.any(String), updated_at: expect.any(String)},
                 ],
             },
         });

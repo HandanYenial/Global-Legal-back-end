@@ -109,9 +109,9 @@ describe("get" , function(){
             numEmployees : 25,
             description : "Department 1 Description",
             lawsuits :[
-                {id: testLawsuitIds[0], title: "Lawsuit1", description: "Lawsuit1 description", status: "open", location: "New York", departmentHandle: "legal"},
-                {id: testLawsuitIds[1], title: "Lawsuit2", description: "Lawsuit2 description", status: "open", location: "New York", departmentHandle: "legal"},
-                {id: testLawsuitIds[2], title: "Lawsuit3", description: "Lawsuit3 description", status: "open", location: "New York", departmentHandle: "legal"},
+                {id: testLawsuitIds[0], title: "Lawsuit1", description: "Lawsuit1 description", comment: "open", location: "New York", departmentHandle: "legal"},
+                {id: testLawsuitIds[1], title: "Lawsuit2", description: "Lawsuit2 description", comment: "open", location: "New York", departmentHandle: "legal"},
+                {id: testLawsuitIds[2], title: "Lawsuit3", description: "Lawsuit3 description", comment: "open", location: "New York", departmentHandle: "legal"},
             ],
         });
     });

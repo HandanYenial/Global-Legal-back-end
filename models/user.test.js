@@ -1,6 +1,6 @@
 "use strict";
 
-const Employee = require("./employee.js");
+const User = require("./user.js");
 const db = require("../db.js");
 const { BadRequestError, NotFoundError, UnauthorizedError} = require("../expressError");
 const {
@@ -18,19 +18,19 @@ afterAll(commonAfterAll);
 
 describe("authenticate" , function(){
     test("works", async function(){
-        const employee = await Employee.authenticate("e1" , "password1");
-        expect(employee).toEqual({
-            username: "e1",
-            firstName: "Employee1",
-            lastName: "Employee1",
-            email: "employee1.employee.com",
+        const user = await User.authenticate("u1" , "password1");
+        expect(user).toEqual({
+            username: "u1",
+            firstName: "user1",
+            lastName: "user1",
+            email: "user1.user.com",
             isAdmin: false,
         });
     });
 
-    test("unauth if there is no such employee" , async function(){
+    test("unauth if there is no such user" , async function(){
         try{
-            await Employee.authenticate("nope" , "password");
+            await User.authenticate("nope" , "password");
             fail();
         } catch(err){
             expect (err instanceof UnauthorizedError).toBeTruthy();
@@ -39,7 +39,7 @@ describe("authenticate" , function(){
 
     test("unauth if the password is wrong", async function(){
         try{
-            await Employee.authenticate("e1" , "wrong");
+            await User.authenticate("u1" , "wrong");
             fail();
         } catch(err){
             expect(err instanceof UnauthorizedError).toBeTruthy();
@@ -48,19 +48,19 @@ describe("authenticate" , function(){
 });
 
 describe ("register" ,function(){
-    const newEmployee = {
+    const newuser = {
         username: "new",
         firstName : "New",
-        lastName: "Employee",
-        email: "new.employee.com",
+        lastName: "user",
+        email: "new.user.com",
         isAdmin: false,
     };
 
     test("works", async function(){
-        let employee = await Employee.register({...newEmployee, password: "password"});
-        expect(employee).toEqual(newEmployee);
+        let user = await User.register({...newuser, password: "password"});
+        expect(user).toEqual(newuser);
         const found = await db.query(
-            "SELECT * FROM employees WHERE username = 'new'"
+            "SELECT * FROM users WHERE username = 'new'"
         );
         expect(found.rows.length).toEqual(1);
         expect(found.rows[0].is_admin).toEqual(false);
@@ -69,10 +69,10 @@ describe ("register" ,function(){
 
 
     test("adds admin" , async function(){
-        let employee = await Employee.register({...newEmployee, password: "password", isAdmin: true});
-        expect(employee).toEqual({...newEmployee, isAdmin: true});
+        let user = await User.register({...newuser, password: "password", isAdmin: true});
+        expect(user).toEqual({...newuser, isAdmin: true});
         const found = await db.query(
-            "SELECT * FROM employees WHERE username = 'new'"
+            "SELECT * FROM users WHERE username = 'new'"
         );
         expect(found.rows.length).toEqual(1);
         expect(found.rows[0].is_admin).toEqual(true);
@@ -81,12 +81,12 @@ describe ("register" ,function(){
 
     test("bad request with duplicated data" , async function(){
         try{
-            await Employee.register({
-                ...newEmployee,
+            await User.register({
+                ...newuser,
                 password: "password",
             });
-            await Employee.register({
-                ...newEmployee,
+            await User.register({
+                ...newuser,
                 password: "password",
             });
             fail();
@@ -98,27 +98,27 @@ describe ("register" ,function(){
 
 describe("findAll" , function(){
     test("works" , async function(){
-        let employees = await Employee.findAll();
-        expect(employees).toEqual([
+        let users = await User.findAll();
+        expect(users).toEqual([
             {
-                username: "e1",
-                firstName: "Employee1",
-                lastName: "Employee1",
-                email: "employee1.employee.com",
+                username: "u1",
+                firstName: "user1",
+                lastName: "user1",
+                email: "user1.user.com",
                 isAdmin: false,
             },
             {
-                username: "e2",
-                firstName: "Employee2",
-                lastName: "Employee2",
-                email: "employee2.employee.com",
+                username: "u2",
+                firstName: "user2",
+                lastName: "user2",
+                email: "user2.user.com",
                 isAdmin: false,
             },
             {
-                username: "e3",
-                firstName: "Employee3",
-                lastName: "Employee3",
-                email: "employee3.employee.com",
+                username: "u3",
+                firstName: "user3",
+                lastName: "user3",
+                email: "user3.user.com",
                 isAdmin: false,
             },
         ]);
@@ -127,20 +127,20 @@ describe("findAll" , function(){
 
 describe("get", function(){
     test("works", async function(){
-        let employee = await Employee.get("e1");
-        expect(employee).toEqual({
-            username : "e1",
-            firstName: "Employee1",
-            lastName: "Employee1",
-            email: "employee1.employee.com",
+        let user = await User.get("u1");
+        expect(user).toEqual({
+            username : "u1",
+            firstName: "user1",
+            lastName: "user1",
+            email: "user1.user.com",
             isAdmin: false,
             assignments:[testLawsuitIds[0]],
         });
     });
 
-    test("not found if no such employee", async function(){
+    test("not found if no such user", async function(){
         try{
-            await Employee.get("nope");
+            await User.get("nope");
             fail();
         } catch(err){
             expect (err instanceof NotFoundError).toBeTruthy();
@@ -151,40 +151,40 @@ describe("get", function(){
 describe("update", function(){
     const updatedData = {
         firstName: "Updated",
-        lastName: "Employee",
-        email: "updated.employee.com",
+        lastName: "user",
+        email: "updated.user.com",
         isAdmin: true,
     };
 
     test("works", async function(){
-        let lawsuit = await Employee.update("e1", updatedData);
+        let lawsuit = await User.update("u1", updatedData);
         expect(lawsuit).toEqual({
-            username: "e1",
+            username: "u1",
             ...updatedData,
         });
     });
 
-    test("works  :set password" , async function(){
-        let lawsuit = await Employee.update("e1", {
+    test("works:set password" , async function(){
+        let lawsuit = await User.update("u1", {
             password: "new",
         });
 
         expect(lawsuit).toEqual({
-            username: "e1",
-            firstName: "Employee1",
-            lastName: "Employee1",
-            email: "employee1.employee.com",
+            username: "u1",
+            firstName: "user1",
+            lastName: "user1",
+            email: "user1.user.com",
             isAdmin: false,
         });
 
-        const found = await db.query("SELECT * FROM employees WHERE username = 'e1'");
+        const found = await db.query("SELECT * FROM users WHERE username = 'u1'");
         expect(found.rows.length).toEqual(1);
         expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
     });
 
     test("not found if there is no such user" , async function(){
         try{
-            await Employee.update("nope", {
+            await User.update("nope", {
                 firstName: "Updated",
             });
             fail();
@@ -195,7 +195,7 @@ describe("update", function(){
 
     test("bad request with no data" , async function(){
         try{
-            await Employee.update("e1", {});
+            await User.update("u1", {});
             fail();
         } catch(err){
             expect(err instanceof BadRequestError).toBeTruthy();
@@ -205,14 +205,14 @@ describe("update", function(){
 
 describe("remove", function(){
     test("works", async function(){
-        await Employee.remove("e1");
-        const res = await db.query("SELECT username FROM employees WHERE username = 'e1'");
+        await User.remove("u1");
+        const res = await db.query("SELECT username FROM users WHERE username = 'u1'");
         expect(res.rows.length).toEqual(0);
     });
 
-    test("not found if no such employee" , async function(){
+    test("not found if no such user" , async function(){
         try{
-            await Employee.remove("nope");
+            await User.remove("nope");
             fail();
         } catch(err){
             expect(err instanceof NotFoundError).toBeTruthy();
@@ -222,28 +222,28 @@ describe("remove", function(){
 
 describe("addLawsuit" ,function(){
     test("works" , async function(){
-        await Employee.addLawsuit("e1", testLawsuitIds[1]);
+        await User.addLawsuit("u1", testLawsuitIds[1]);
         const res = await db.query(
             "SELECT * FROM assignments WHERE lawsuit_id = $1", [testLawsuitIds[1]]
         );
         expect(res.rows).toEqual([{
             lawsuit_id : testLawsuitIds[1],
-            username: "e1",
+            username: "u1",
         }]);
     });
 
     test("not found if there is no such a lawsuit" , async function(){
         try{
-            await Employee.addLawsuit("e1", 0);
+            await User.addLawsuit("u1", 0);
             fail();
         } catch(err){
             expect(err instanceof NotFoundError).toBeTruthy();
         }
     });
 
-    test("not found if there is no such a employee" , async function(){
+    test("not found if there is no such a user" , async function(){
         try{
-            await Employee.addLawsuit("nope", testLawsuitIds[0], "assigned");
+            await User.addLawsuit("nope", testLawsuitIds[0], "assigned");
             fail();
         } catch(err){
             expect(err instanceof NotFoundError).toBeTruthy();

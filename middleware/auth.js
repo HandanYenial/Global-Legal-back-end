@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken"); //Import JWT
 const { SECRET_KEY } = require("../config"); //Import secret key
 const { UnauthorizedError } = require("../expressError"); //Import error
 
-/** Middleware to authenticate employee. 
+/** Middleware to authenticate user. 
  * If a token is provided, verify the token
  * If the the provided token is valid store the token payload on res.locals
  * (this will include the username and isAdmin)
@@ -15,10 +15,10 @@ const { UnauthorizedError } = require("../expressError"); //Import error
 
 function authenticateJWT(req,res,next){
     try{
-        const authHeader = req.headers && req.headers.autherization;//Get the auth header
+        const authHeader = req.headers && req.headers.authorization;//Get the auth header
         if(authHeader){
             const token = authHeader.replace(/^[Bb]earer /, "").trim(); //Remove Bearer from token
-            res.locals.employee = jwt.verify(token, SECRET_KEY);//Verify token
+            res.locals.user = jwt.verify(token, SECRET_KEY);//Verify token
         }
         return next();
     } catch(err){
@@ -31,7 +31,7 @@ function authenticateJWT(req,res,next){
 
 function ensureLoggedIn(req,res,next){
     try{
-        if(!res.locals.employee) throw new UnauthorizedError();
+        if(!res.locals.user) throw new UnauthorizedError();
         return next();
     } catch(err){
         return next(err);
@@ -43,7 +43,7 @@ function ensureLoggedIn(req,res,next){
 
 function ensureAdmin(req,res,next){
     try{
-        if(!res.locals.employee || !res.locals.employee.isAdmin) {
+        if(!res.locals.user || !res.locals.user.isAdmin) {
             throw new UnauthorizedError();
         }
         return next();
@@ -55,10 +55,10 @@ function ensureAdmin(req,res,next){
 //Middleware to use when they must provide a valid token and be user matching username provided as route param.
 //If not raise an error : UnauthorizedError
 
-function ensureCorrectEmployeeOrAdmin(req,res,next){
+function ensureCorrectUserOrAdmin(req,res,next){
     try{
-        const employee = res.locals.employee;
-        if(!(employee && (employee.isAdmin || employee.username === req.params.username))){
+        const user = res.locals.user;
+        if(!(user && (user.isAdmin || user.username === req.params.username))){
             throw new UnauthorizedError();
         }
         return next();
@@ -71,5 +71,5 @@ module.exports = {
     authenticateJWT,
     ensureLoggedIn,
     ensureAdmin,
-    ensureCorrectEmployeeOrAdmin,
+    ensureCorrectUserOrAdmin,
 };

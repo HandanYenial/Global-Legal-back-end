@@ -9,24 +9,24 @@ const { NotFoundError } = require("../expressError");
 class Lawsuit {
     //Create a lawsuit from data
     //update the database and return the new lawsuit data
-    //including: {id, title, description, status,location, department_id}
+    //including: {id, title, description, comment,location, department_id}
 
     static async create(data){
         const result = await db.query(
             `INSERT INTO lawsuits(
                 title,
                 description,
-                status,
+                comment,
                 location,
                 department_handle
                 created_at,
                 updated_at)
             VALUES ($1,$2,$3,$4,$5,to_timestamp(${ Date.now()}),to_timestamp(${ Date.now()}))
-            RETURNING id, title, description, status, location, department_handle AS "departmentHandle", created_at AS "createdAt", updated_at AS "updatedAt"`,
+            RETURNING id, title, description, comment, location, department_handle AS "departmentHandle", created_at AS "createdAt", updated_at AS "updatedAt"`,
             [
                 data.title,
                 data.description,
-                data.status,
+                data.comment,
                 data.location,
                 data.departmentHandle,
             ]
@@ -36,13 +36,13 @@ class Lawsuit {
     }
 
     //Find all lawsuits(filter by title)
-    //Returns [{id, title, description, status, location, department_handle}, ...]
+    //Returns [{id, title, description, comment, location, department_handle}, ...]
 
     static async findAll({title} = {}){
         let query = `SELECT l.id,
                             l.title,
                             l.description,
-                            l.status,
+                            l.comment,
                             l.location,
                             l.department_handle AS "departmentHandle"
                             d.name AS "departmentName"
@@ -69,7 +69,7 @@ class Lawsuit {
     }
 
     //Given a lawsuit id, return data about lawsuit
-    //Returns {id, title, description, status, location, department_handle}
+    //Returns {id, title, description, comment, location, department_handle}
     //where department is {handle, name, description, numEmployees}
 
     static async get(id){
@@ -77,7 +77,7 @@ class Lawsuit {
             `SELECT id,
                     title,
                     description,
-                    status,
+                    comment,
                     location,
                     department_handle AS "departmentHandle"
             FROM lawsuits
@@ -109,7 +109,7 @@ class Lawsuit {
 //Update lawsuit with 'data'
 //This is a "partial update" --- it's fine if data doesn't contain all the fields;
 //this only changes provided fields.
-//Returns {id, title, description, status, location, department_handle}
+//Returns {id, title, description, comment, location, department_handle}
 
     static async update(id,data){
        const{ setCols, values } = sqlForPartialUpdate(
@@ -124,7 +124,7 @@ class Lawsuit {
                              RETURNING id,
                                       title,
                                       description,
-                                      status,
+                                      comment,
                                       location,
                                       department_handle AS "departmentHandle",
                                       updated_at AS "updatedAt"`;

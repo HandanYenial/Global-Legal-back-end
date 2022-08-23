@@ -2,14 +2,14 @@
 
 const db = require("../db");
 const { createToken } = require("../helpers/tokens");
-const Employee = require("../models/employee");
+const User = require("../models/user");
 const Department = require("../models/department");
 const Lawsuit = require("../models/lawsuit");
 
 const testLawsuitIds = []; //Array to store lawsuit ids
 
 async function commonBeforeAll(){
-    await db.query("DELETE FROM employees"); //Delete all employees in the test database
+    await db.query("DELETE FROM users"); //Delete all users in the test database
     await db.query("DELETE FROM departments"); //Delete all departments in the test database
 
     await Department.create(
@@ -44,7 +44,7 @@ async function commonBeforeAll(){
             {
                 title:"Lawsuit1",
                 description:"Lawsuit1 description",
-                status:"status1",
+                comment:"comment1",
                 location:"location1",
                 department_handle:"d1"
             }
@@ -55,7 +55,7 @@ async function commonBeforeAll(){
             {
                 title:"Lawsuit2",
                 description:"Lawsuit2 description",
-                status:"status2",
+                comment:"comment2",
                 location:"location2",
                 department_handle:"d2"
             }
@@ -66,44 +66,44 @@ async function commonBeforeAll(){
             {
                 title:"Lawsuit3",
                 description:"Lawsuit3 description",
-                status:"status3",
+                comment:"comment3",
                 location:"location3",
                 department_handle:"d3"
             }
         )).id;
 
-    await Employee.register(
+    await User.register(
         {
-            username:"employee1",
+            username:"user1",
             password:"password1",
             firstname:"firstname1",
             lastname:"lastname1",
-            email:"email@email.com",
+            email:"user1@email.com",
             isAdmin:false
         }
     );
-    await Employee.register(
+    await User.register(
         {
-            username:"employee2",
+            username:"user2",
             password:"password2",
             firstname:"firstname2",
             lastname:"lastname2",
-            email:"employee2@email.com",
+            email:"user2@email.com",
             isAdmin:false
         }
     );
-    await Employee.register(
+    await User.register(
         {
-            username:"employee3",
+            username:"user3",
             password:"password3",
             firstname:"firstname3",
             lastname:"lastname3",
-            email:"employee3@email.com",
+            email:"user3@email.com",
             isAdmin:false
         }
     );
 
-    await Employee.addLawsuit("employee1", testLawsuitIds[0]);
+    await User.addLawsuit("user1", testLawsuitIds[0]);
 }
 
 async function commonBeforeEach(){
@@ -118,9 +118,9 @@ async function commonAfterAll(){
     await db.end();
 }
 
-const e1Token = createToken({username:"employee1", isAdmin:false});
-const e2Token = createToken({username:"employee2", isAdmin:false});
-const adminToken = createToken({username:"employee3", isAdmin:true});
+const u1Token = createToken({username:"user1", isAdmin:false});
+const u2Token = createToken({username:"user2", isAdmin:false});
+const adminToken = createToken({username:"user3", isAdmin:true});
 
 module.exports = {
     commonBeforeAll,
@@ -128,7 +128,7 @@ module.exports = {
     commonAfterEach,
     commonAfterAll,
     testLawsuitIds,
-    e1Token,
-    e2Token,
+    u1Token,
+    u2Token,
     adminToken
 };
