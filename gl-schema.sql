@@ -20,7 +20,7 @@ CREATE TABLE lawsuits(
   description TEXT NOT NULL,
   comment TEXT NOT NULL,
   location TEXT NOT NULL,
-  category_handle VARCHAR(25) NOT NULL
+  category_handle VARCHAR(25)
     REFERENCES categories ON DELETE CASCADE,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP

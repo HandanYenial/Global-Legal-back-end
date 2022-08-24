@@ -55,7 +55,7 @@ class Category {
 
             if (name){
                 queryValues.push(`%${name}%`);
-                whereExpressions.push(`name ILIKE ${queryValues.length}`);//ILIKE: lawsuit insensitive
+                whereExpressions.push(`name ILIKE $${queryValues.length}`);//ILIKE: lawsuit insensitive
             }
 
             if (whereExpressions.length > 0){
@@ -96,7 +96,7 @@ class Category {
                 comment,
                 location,
                 created_at AS "createdAt",
-                updated_at AS "updatedAt",
+                updated_at AS "updatedAt"
                 FROM lawsuits
                 WHERE category_handle = $1
                 ORDER BY id`,

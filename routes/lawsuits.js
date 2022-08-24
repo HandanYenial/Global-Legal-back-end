@@ -41,7 +41,7 @@ router.get("/" , ensureLoggedIn , async function(req,res,next){
     try{
         const validator = jsonschema.validate(req.query , lawsuitSearchSchema); //Validate the query according to the schema
         if(!validator.valid){ //If the query is not valid like if the query is not a string
-            const errs = validator.errors.map(e >e.stack); //Map the errors to the stack
+            const errs = validator.errors.map(e =>e.stack); //Map the errors to the stack
             throw new BadRequestError(errs); //Throw a bad request error
         }
         const lawsuits = await Lawsuit.findAll(req.query); //Find all lawsuits according to the query(seacrh filter)

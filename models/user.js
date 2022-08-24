@@ -6,6 +6,7 @@ const { sqlForPartialUpdate } = require("../helpers/sql");
 const { NotFoundError, BadRequestError, UnauthorizedError } = require("../expressError");
 const { BCRYPT_WORK_FACTOR } = require("../config.js");
 
+
 //related functions for users
 
 class User {
@@ -68,7 +69,7 @@ class User {
                  is_admin)
             VALUES ($1,$2,$3,$4,$5,$6)
             RETURNING
-            username,first_name AS "firstName",lastname AS "lastName",email,is_admin AS "isAdmin"`,
+            username,first_name AS "firstName",last_name AS "lastName",email,is_admin AS "isAdmin"`,
             [username , hashedPassword, firstName, lastName, email, isAdmin],
         );
         const user = result.rows[0];

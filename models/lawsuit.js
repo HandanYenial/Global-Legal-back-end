@@ -6,7 +6,7 @@ const { NotFoundError } = require("../expressError");
 
 //Related functions for lawsuits
 
-class Lawsuit {
+class Lawsuit{
     //Create a lawsuit from data
     //update the database and return the new lawsuit data
     //including: {id, title, description, comment,location, category_id}
@@ -38,18 +38,18 @@ class Lawsuit {
     //Find all lawsuits(filter by title)
     //Returns [{id, title, description, comment, location, category_handle}, ...]
 
-    static async findAll({title} = {}){
-        let query = `SELECT lawsuit.id,
-                            lawsuit.title,
-                            lawsuit.description,
-                            lawsuit.comment,
-                            lawsuit.location,
-                            lawsuit.category_handle AS "categoryHandle"
-                            lawsuit.created_at AS "createdAt",
-                            lawsuit.updated_at AS "updatedAt",
-                            category.name AS "categoryName"
-                    FROM lawsuits AS lawsuit
-                        LEFT JOIN categories AS category ON category.handle = lawsuit.category_handle`;
+    static async findAll({ title } = {}){
+        let query = `SELECT l.id,
+                            l.title,
+                            l.description,
+                            l.comment,
+                            l.location,
+                            l.category_handle AS "categoryHandle",
+                            l.created_at AS "createdAt",
+                            l.updated_at AS "updatedAt",
+                            c.name AS "categoryName"
+                    FROM lawsuits AS l
+                        LEFT JOIN categories AS c ON c.handle = l.category_handle`;
         let whereExpressions = [];
         let queryValues = [];
 
@@ -81,7 +81,9 @@ class Lawsuit {
                     description,
                     comment,
                     location,
-                    category_handle AS "categoryHandle"
+                    category_handle AS "categoryHandle",
+                    created_at AS "createdAt",
+                    updated_at AS "updatedAt"
             FROM lawsuits
             WHERE id = $1`,
             [id],
@@ -129,7 +131,6 @@ class Lawsuit {
                                       comment,
                                       location,
                                       category_handle AS "categoryHandle",
-                                      created_at AS "createdAt",
                                       updated_at AS "updatedAt"`;
           const result = await db.query(querySql, [...values, id]);
           const lawsuit = result.rows[0];

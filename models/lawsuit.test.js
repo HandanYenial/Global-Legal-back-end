@@ -141,7 +141,7 @@ describe("update" , function(){
         let lawsuit = await Lawsuit.update(testLawsuitIds[0], updateData);
         expect(lawsuit).toEqual({
             id : testLawsuitIds[0],
-            categoryHandle: "d1",
+            categoryHandle: "c1",
             ...updateData,
         });
     });

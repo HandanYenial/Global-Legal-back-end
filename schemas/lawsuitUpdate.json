@@ -5,13 +5,7 @@
     "default": {},
     "title": "Root Schema",
     "required": [
-        "title",
-        "description",
-        "comment",
-        "location",
-        "category_handle",
-        "created_at",
-        "updated_at"
+        "title"
     ],
     "properties": {
         "title": {
@@ -48,7 +42,7 @@
         },
         "category_handle": {
             "type": "string",
-            "default": "c1",
+            "default": "",
             "title": "The category_handle Schema",
             "examples": [
                 "any category"
@@ -76,7 +70,7 @@
         "description": "Lawsuit description",
         "comment": "open",
         "location": "location",
-        "category_handle": "any category",
+        "category_handle": "",
         "created_at": "2020-05-20",
         "updated_at": "2020-05-20"
     }]

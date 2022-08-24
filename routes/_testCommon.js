@@ -76,8 +76,8 @@ async function commonBeforeAll(){
         {
             username:"user1",
             password:"password1",
-            firstname:"firstname1",
-            lastname:"lastname1",
+            firstName:"firstname1",
+            lastName:"lastname1",
             email:"user1@email.com",
             isAdmin:false
         }
@@ -86,8 +86,8 @@ async function commonBeforeAll(){
         {
             username:"user2",
             password:"password2",
-            firstname:"firstname2",
-            lastname:"lastname2",
+            firstName:"firstname2",
+            lastName:"lastname2",
             email:"user2@email.com",
             isAdmin:false
         }
@@ -96,8 +96,8 @@ async function commonBeforeAll(){
         {
             username:"user3",
             password:"password3",
-            firstname:"firstname3",
-            lastname:"lastname3",
+            firstName:"firstname3",
+            lastName:"lastname3",
             email:"user3@email.com",
             isAdmin:false
         }

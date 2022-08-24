@@ -10,6 +10,7 @@ const { ensureAdmin, ensureCorrectUserOrAdmin} = require("../middleware/auth");
 const User = require("../models/user");
 const userNewSchema = require("../schemas/userNew.json");
 const userUpdateSchema = require("../schemas/userUpdate.json");
+const { createToken } = require("../helpers/tokens");
 
 /**POST
  * Adds a new user to the database. 
@@ -19,7 +20,7 @@ const userUpdateSchema = require("../schemas/userUpdate.json");
  * Returns {user: {username, firstName, lastName, email, isAdmin}, token}
  */
 
-router.post("/" , ensureAdmin , async function(req,res,next){ //ensureAdmin:only admin can add new users
+router.post("/" , ensureAdmin,async function(req,res,next){ //ensureAdmin:only admin can add new users
     try{
         const validator = jsonschema.validate(req.body, userNewSchema); //validate the data by using jsonschema
         if(!validator.valid){ //if the data is not valid, throw an error
@@ -27,7 +28,7 @@ router.post("/" , ensureAdmin , async function(req,res,next){ //ensureAdmin:only
             throw new BadRequestError(errs); //throw a bad request error with the error stack as the message
         }
 
-        const user = await User.create(req.body); //create a new user, and return the user
+        const user = await User.register(req.body); //create a new user, and return the user
         const token = createToken(user); //create a token for the user and return the token
         return res.status(201).json({user, token}); //return the user and the token
     }catch(err) {
@@ -57,7 +58,7 @@ router.get("/" , ensureAdmin, async function(req,res,next){
  * Autherization required: admin or correct user
  */
 
-router.get("/:username", ensureCorrectUserOrAdmin, async function(){
+router.get("/:username", ensureCorrectUserOrAdmin, async function(req,res,next){
     try{
         const user = await User.get(req.params.username); //find the user and return the user
         return res.json({user}); //return the user

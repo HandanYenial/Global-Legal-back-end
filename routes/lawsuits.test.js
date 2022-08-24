@@ -94,7 +94,7 @@ describe("POST/lawsuits" , function(){ //tests for the post/lawsuits route
 
 describe("GET" , function(){ //tests for the get route
     test("works:for admin" , async function(){
-        const response = await request(app).get("/lawsuits")
+        const response = await request(app).get(`/lawsuits`)
                             .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
         expect(response.body).toEqual({ //expect the response body to be
             lawsuits : [
@@ -133,7 +133,7 @@ describe("GET" , function(){ //tests for the get route
     });
 
     test("works:for non-admin" , async function(){//test if a non-admin can get the lawsuits
-        const response = await request(app).get("/lawsuits")
+        const response = await request(app).get(`/lawsuits`)
                             .set("authorization", `Bearer ${u1Token}`); //set the authorization header to the user token
         expect(response.body).toEqual({ //expect the response body to be
             lawsuits : [
@@ -173,7 +173,7 @@ describe("GET" , function(){ //tests for the get route
 
     test("works:for admin with filter" , async function(){ //test if the admin can get the lawsuits with a filter
         const response = await request(app)
-                            .get("/lawsuits")
+                            .get(`/lawsuits`)
                             .query({title : "Lawsuit1"})
                             .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
         expect(response.body).toEqual({ //expect the response body to be
@@ -194,7 +194,7 @@ describe("GET" , function(){ //tests for the get route
 
     test("works:for non-admin with filter" , async function(){ //test if a non-admin can get the lawsuits with a filter
         const response = await request(app)
-                            .get("/lawsuits")
+                            .get(`/lawsuits`)
                             .query({title : "Lawsuit1"})
                             .set("authorization", `Bearer ${u1Token}`); //set the authorization header to the user token
         expect(response.body).toEqual({ //expect the response body to be
@@ -215,7 +215,7 @@ describe("GET" , function(){ //tests for the get route
 
     test("bad request:with invalid filter" , async function(){ //test if the request is bad if the filter is invalid
         const response = await request(app)
-                            .get("/lawsuits")
+                            .get(`/lawsuits`)
                             .query({title : 123456})
                             .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
         expect(response.statusCode).toEqual(400); //expect the status code to be 400

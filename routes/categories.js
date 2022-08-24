@@ -14,7 +14,7 @@ const categoryNewSchema = require("../schemas/categoryNew.json");
 const categoryUpdateSchema = require("../schemas/categoryUpdate.json");
 const categorySearchSchema = require("../schemas/categorySearch.json");
 
-const router = new express.Router();
+const router = new express.Router(); 
 
 /**POST 
  * { category } => { category }

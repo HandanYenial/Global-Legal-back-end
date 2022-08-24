@@ -27,8 +27,8 @@ describe("POST/users" , function(){
                         .send({ //send the following data
                             username:"user4",
                             password:"password4",
-                            firstname:"firstname4",
-                            lastname:"lastname4",
+                            firstName:"firstname4",
+                            lastName:"lastname4",
                             email:"user4@email.com",
                             isAdmin:false
                         })
@@ -37,8 +37,8 @@ describe("POST/users" , function(){
         expect(response.body).toEqual({ //expect the response body to be the following(same as what we posted)
             user:{
                 username:"user4",
-                firstname:"firstname4",
-                lastname:"lastname4",
+                firstName:"firstname4",
+                lastName:"lastname4",
                 email:"user4@email.com",
                 isAdmin:false
             }, token:expect.any(String),//expect the token to be any string
@@ -51,8 +51,8 @@ describe("POST/users" , function(){
                         .send({ //send the following data
                             username:"user5",
                             password:"password5",
-                            firstname:"firstname5",
-                            lastname:"lastname5",
+                            firstName:"firstname5",
+                            lastName:"lastname5",
                             email:"user5@email.com",
                             isAdmin:true
                         })
@@ -61,8 +61,8 @@ describe("POST/users" , function(){
         expect(response.body).toEqual({ //expect the response body to be the following(same as what we posted)
             user:{
                 username:"user5",
-                firstname:"firstname5",
-                lastname:"lastname5",
+                firstName:"firstname5",
+                lastName:"lastname5",
                 email:"user5@email.com",
                 isAdmin:true
             }, token:expect.any(String),//expect the token to be any string
@@ -75,8 +75,8 @@ describe("POST/users" , function(){
                         .send({ //send the following data
                             username:"user6",
                             password:"password6",
-                            firstname:"firstname6",
-                            lastname:"lastname6",
+                            firstName:"firstname6",
+                            lastName:"lastname6",
                             email:"user6@email.com",
                             isAdmin:true
                         })
@@ -90,8 +90,8 @@ describe("POST/users" , function(){
                         .send({ //send the following data
                             username:"user7",
                             password:"password7",
-                            firstname:"firstname7",
-                            lastname:"lastname7",
+                            firstName:"firstname7",
+                            lastName:"lastname7",
                             email:"user7@email.com",
                             isAdmin:true
                         });
@@ -114,8 +114,8 @@ describe("POST/users" , function(){
                         .send({ //send the following data
                             username:"user9",
                             password:"password9",
-                            firstname:"firstname9",
-                            lastname:29,
+                            firstName:"firstname9",
+                            lastName:29,
                             email:"123456789",
                             isAdmin:true
                         })
@@ -133,22 +133,22 @@ describe("GET/users"  , function(){
             users:[
                 {
                     username:"user1",
-                    firstname:"firstname1",
-                    lastname:"lastname1",
+                    firstName:"firstname1",
+                    lastName:"lastname1",
                     email:"user1@email.com",
                     isAdmin:false
                 },
                 {
                     username:"user2",
-                    firstname:"firstname2",
-                    lastname:"lastname2",
+                    firstName:"firstname2",
+                    lastName:"lastname2",
                     email:"user2@email.com",
                     isAdmin:false
                 },
                 {
                     username:"user3",
-                    firstname:"firstname3",
-                    lastname:"lastname3",
+                    firstName:"firstname3",
+                    lastName:"lastname3",
                     email:"user3@email.com",
                     isAdmin:false
                 },
@@ -179,8 +179,8 @@ describe("GET/users/:username", function(){
         expect(response.body).toEqual({ //expect the response body to be the following
             user:{
                 username:"user1",
-                firstname:"firstname1",
-                lastname:"lastname1",
+                firstName:"firstname1",
+                lastName:"lastname1",
                 email:"user1@email.com",
                 isAdmin:false,
                 assignments:[testLawsuitIds[0]],
@@ -195,8 +195,8 @@ describe("GET/users/:username", function(){
         expect(response.body).toEqual({ //expect the response body to be the following
             user:{
                 username:"user1",
-                firstname:"firstname1",
-                lastname:"lastname1",
+                firstName:"firstname1",
+                lastName:"lastname1",
                 email:"user1@emial.com",
                 isAdmin:false,
                 assignments:[testLawsuitIds[0]],
@@ -230,15 +230,15 @@ describe("PATCH/users/:user" , function(){//patch request to users route with th
         const response = await request(app) //make a request to the app
                         .patch(`/users/user1`) //patch request to users route with the username of user1
                         .send({ //send the following data
-                            firstname:"newfirstname1",
-                            lastname:"newlastname1",
+                            firstName:"newfirstname1",
+                            lastName:"newlastname1",
                         })
                         .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
         expect(response.body).toEqual({ //expect the response body to be the following
             user:{
                 username:"user1",
-                firstname:"newfirstname1",
-                lastname:"newlastname1",
+                firstName:"newfirstname1",
+                lastName:"newlastname1",
                 email:"user1@email.com",
                 isAdmin:false,
             },
@@ -249,15 +249,15 @@ describe("PATCH/users/:user" , function(){//patch request to users route with th
         const response = await request(app) //make a request to the app
                         .patch(`/users/user1`) //patch request to users route with the username of user1
                         .send({ //send the following data
-                            firstname:"newfirstname1",
-                            lastname:"newlastname1",
+                            firstName:"newfirstname1",
+                            lastName:"newlastname1",
                         })
                         .set("authorization", `Bearer ${u1Token}`); //set the authorization header to the user token
         expect(response.body).toEqual({ //expect the response body to be the following
             user:{
                 username:"user1",
-                firstname:"newfirstname1",
-                lastname:"newlastname1",
+                firstName:"newfirstname1",
+                lastName:"newlastname1",
                 email:"user1@email.com",
                 isAdmin:false,
             },
@@ -268,8 +268,8 @@ describe("PATCH/users/:user" , function(){//patch request to users route with th
         const response = await request(app) //make a request to the app
                         .patch(`/users/user1`) //patch request to users route with the username of user1
                         .send({ //send the following data
-                            firstname:"newfirstname1",
-                            lastname:"newlastname1",
+                            firstName:"newfirstname1",
+                            lastName:"newlastname1",
                         })
                         .set("authorization", `Bearer ${u2Token}`); //set the authorization header to the user token
         expect(response.statusCode).toEqual(401); //expect the status code to be 401
@@ -279,8 +279,8 @@ describe("PATCH/users/:user" , function(){//patch request to users route with th
         const response = await request(app) //make a request to the app
                         .patch(`/users/user1`) //patch request to users route with the username of user1
                         .send({ //send the following data
-                            firstname:"newfirstname1",
-                            lastname:"newlastname1",
+                            firstName:"newfirstname1",
+                            lastName:"newlastname1",
                         });
         expect(response.statusCode).toEqual(401); //expect the status code to be 401
     });
@@ -289,8 +289,8 @@ describe("PATCH/users/:user" , function(){//patch request to users route with th
         const response = await request(app) //make a request to the app
                         .patch(`/users/user100`) //patch request to users route with the username of user100
                         .send({ //send the following data
-                            firstname:"newfirstname1",
-                            lastname:"newlastname1",
+                            firstName:"newfirstname1",
+                            lastName:"newlastname1",
                         })
                         .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
         expect(response.statusCode).toEqual(404); //expect the status code to be 404
@@ -300,8 +300,8 @@ describe("PATCH/users/:user" , function(){//patch request to users route with th
         const response = await request(app) //make a request to the app
                         .patch(`/users/user1`) //patch request to users route with the username of user1
                         .send({ //send the following data
-                            firstname:42,
-                            lastname:"newlastname1",
+                            firstName:42,
+                            lastName:"newlastname1",
                         })
                         .set("authorization", `Bearer ${adminToken}`); //set the authorization header to the admin token
         expect(response.statusCode).toEqual(400); //expect the status code to be 400
@@ -318,8 +318,8 @@ describe("PATCH/users/:user" , function(){//patch request to users route with th
         expect(response.body).toEqual({ //expect the response body to be the following
             user:{
                 username:"user1",
-                firstname:"newfirstname1",
-                lastname:"newlastname1",
+                firstName:"newfirstname1",
+                lastName:"newlastname1",
                 email:"user1@email.com",
                 isAdmin:false,
             },
