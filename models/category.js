@@ -51,18 +51,18 @@ class Category {
             let whereExpressions = []; //WHERE name=$1, WHERE name= criminal
             let queryValues =[]; //['criminal'] for search by name
 
-            const { name } = searchFilters;
+            const { handle} = searchFilters;
 
-            if (name){
-                queryValues.push(`%${name}%`);
-                whereExpressions.push(`name ILIKE $${queryValues.length}`);//ILIKE: lawsuit insensitive
+            if (handle){
+                queryValues.push(`%${handle}%`);
+                whereExpressions.push(`handle ILIKE $${queryValues.length}`);//ILIKE: lawsuit insensitive
             }
 
             if (whereExpressions.length > 0){
                 query += " WHERE " + whereExpressions.join(" AND ");
             }
             //Finalizing query and return results
-            query += " ORDER BY name";
+            query += " ORDER BY handle";
             const categoriesRes = await db.query(query, queryValues);
             return categoriesRes.rows;
         }

@@ -3,7 +3,7 @@
 const express = require("express");
 const router = express.Router({mergeParams: true});//mergeParams: true is needed to access the id of the parent in the child(=lawsuit) route
 const { BadRequest, BadRequestError } = require("../expressError");
-const { ensureAdmin , ensureLoggedIn } = require("../middleware/auth");
+const { ensureAdmin , ensureCorrectUserOrAdmin, ensureLoggedIn } = require("../middleware/auth");
 const Lawsuit = require("../models/lawsuit");
 const jsonschema = require("jsonschema");
 const lawsuitNewSchema = require("../schemas/lawsuitNew.json");
@@ -17,7 +17,7 @@ const e = require("express");
  * Authorization required: admin
  */
 
-router.post("/" , ensureAdmin, async function(req,res,next){
+router.post("/" , ensureCorrectUserOrAdmin, async function(req,res,next){
     try{
         const validator = jsonschema.validate(req.body ,lawsuitNewSchema);
         if(!validator.valid){
@@ -37,7 +37,7 @@ router.post("/" , ensureAdmin, async function(req,res,next){
  * Authorization required: user or admin
  */
 
-router.get("/" , ensureLoggedIn , async function(req,res,next){
+router.get("/" ,ensureLoggedIn , async function(req,res,next){
     try{
         const validator = jsonschema.validate(req.query , lawsuitSearchSchema); //Validate the query according to the schema
         if(!validator.valid){ //If the query is not valid like if the query is not a string

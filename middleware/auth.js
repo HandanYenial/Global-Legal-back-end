@@ -2,9 +2,9 @@
 
 //Middleware to handle common auth tasks in routes
 
-const jwt = require("jsonwebtoken"); //Import JWT
-const { SECRET_KEY } = require("../config"); //Import secret key
-const { UnauthorizedError } = require("../expressError"); //Import error
+const jwt = require("jsonwebtoken"); 
+const { SECRET_KEY } = require("../config"); 
+const { UnauthorizedError } = require("../expressError"); 
 
 /** Middleware to authenticate user. 
  * If a token is provided, verify the token
@@ -13,7 +13,7 @@ const { UnauthorizedError } = require("../expressError"); //Import error
  * 
 */
 
-function authenticateJWT(req,res,next){
+function authenticateJWT(req,res,next){ //authenticate the user
     try{
         const authHeader = req.headers && req.headers.authorization;//Get the auth header
         if(authHeader){
