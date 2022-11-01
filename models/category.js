@@ -12,7 +12,7 @@ class Category {
     //returns {handle, name, num_employees, description}
     //throw BadREquestError if category already in database
 
-    static async create({ handle, name, numEmployees, description }){
+    static async create({ handle, name, numEmployees, description }){ //
         const duplicateCheck = await db.query(
             `SELECT handle FROM categories WHERE handle = $1`,
             [handle]

@@ -18,7 +18,7 @@ const { BadRequestError } = require("../expressError");
  * Authorization required : none
  */
 
-router.post("/token" , async function(req,res,next){
+router.post("/token" , async function(req,res,next){ //create a token
     try{
         const validator = jsonschema.validate(req.body, userAuthSchema);
         if (!validator.valid){

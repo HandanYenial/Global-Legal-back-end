@@ -1,16 +1,22 @@
 "use strict";
 
 //Middleware to handle common auth tasks in routes
+//Middleware is a function that has access to the request object (req), the response object (res), 
+//and the next middleware function in the application’s request-response cycle.
+//The next middleware function is commonly denoted by a variable named next.
 
-const jwt = require("jsonwebtoken"); 
-const { SECRET_KEY } = require("../config"); 
+const jwt = require("jsonwebtoken"); //jsonwebtoken is a library to generate and verify tokens
+const { SECRET_KEY } = require("../config"); //secret_key is used to sign the token
 const { UnauthorizedError } = require("../expressError"); 
 
 /** Middleware to authenticate user. 
  * If a token is provided, verify the token
  * If the the provided token is valid store the token payload on res.locals
  * (this will include the username and isAdmin)
- * 
+ * jsonwebtoken consists of 3 parts: header, payload, signature
+ * header: type of token and hashing algorithm
+ * payload: data
+ * signature: header and payload are encoded and signed with secret key
 */
 
 function authenticateJWT(req,res,next){ //authenticate the user
