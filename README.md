@@ -4,7 +4,7 @@
 <img src = "https://azbigmedia.com/wp-content/uploads/2021/01/legal-industry-trends-technology.jpg" width="550" height="350"/>
 </p>
 
-Global&Legal is an app designed for lawfirms. With Global&Legal assigning and following up the caes will be easier.
+Global&Legal is an app designed for lawfirms. With Global&Legal assigning and following up the cases will be easier.
 
 The website is deployed : https://globallegal22.surge.sh/
 
