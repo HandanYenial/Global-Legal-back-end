@@ -4,7 +4,7 @@
 <img src = "https://azbigmedia.com/wp-content/uploads/2021/01/legal-industry-trends-technology.jpg" width="550" height="350"/>
 </p>
 
-Global&Legal is an app designed for lawfirms. With Global&Legal assigning and following up the cases will be easier.
+Welcome to Global&Legal app specifically designed to streamline case management for law firms. With Global&Legal, the process of assigning and tracking cases becomes effortless, enabling users to focus on what matters most: delivering exceptional legal services to the clients.
 
 The website is deployed : https://globallegal22.surge.sh/
 
