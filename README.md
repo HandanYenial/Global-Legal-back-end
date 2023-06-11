@@ -62,8 +62,8 @@ __/categories/handle__
 ##  Routes 
 |     Routes     |  Method  |  User/Admin  |          Details             |
 |----------------|----------|------------------|------------------------------|
-|    /register     |Get/Post |      User/Admin        | Create and display a new user with SignUpForm built by React Forms with username,email,password,first name and last name.|
-|    /login      | Get/Post |      User/Admin       | Display the login form built by React Forms and authenticate the user.|
+|    /register     |Get/Post |      User/Admin        | Create and display a new user with Sign Up Form built by React Forms with username,email,password,first name and last name.|
+|    /login      | Get/Post |      User/Admin       | Display the Login form built by React Forms and authenticate the user.|
 |    /logout     | Get      | User/Admin     | Logout the user and clear any information in the session|
 |/ users/user_id| Get     | Admin     |Show user profile : username, firstname, lastname, email|
 |/users/update   |Get/Post  |User/Admin |Update profile for the user by using Profile Form built in React Forms|
