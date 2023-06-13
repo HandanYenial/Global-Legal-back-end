@@ -5,14 +5,14 @@ const { BadRequestError, NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 
 
-//realated functions for deparments
-class Category {
+//related functions for departments
     //Create a law firm category(from data), update database, return new category data
     //data should be {handle, name, num_employees, description}
     //returns {handle, name, num_employees, description}
     //throw BadREquestError if category already in database
 
-    static async create({ handle, name, numEmployees, description }){ //
+class Category {
+    static async create({ handle, name, numEmployees, description }){
         const duplicateCheck = await db.query(
             `SELECT handle FROM categories WHERE handle = $1`,
             [handle]
