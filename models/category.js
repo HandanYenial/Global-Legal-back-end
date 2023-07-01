@@ -5,11 +5,11 @@ const { BadRequestError, NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 
 
-//related functions for departments
+    //related functions for departments
     //Create a law firm category(from data), update database, return new category data
     //data should be {handle, name, num_employees, description}
     //returns {handle, name, num_employees, description}
-    //throw BadREquestError if category already in database
+    //throw BadREquestError if the category already in the database
 
 class Category {
     static async create({ handle, name, numEmployees, description }){
@@ -39,7 +39,7 @@ class Category {
         }
 
         //Find all categories
-        //seacrhfilter: name
+        //searchFilter: name
         //returns [{handle, name, num_employees, description}, ...]
 
         static async findAll(searchFilters = {}){
@@ -62,6 +62,7 @@ class Category {
                 query += " WHERE " + whereExpressions.join(" AND ");
             }
             //Finalizing query and return results
+            
             query += " ORDER BY handle";
             const categoriesRes = await db.query(query, queryValues);
             return categoriesRes.rows;
